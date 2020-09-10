@@ -26,7 +26,7 @@ public class AppEndpoint {
         ApiResponse response  = new ApiResponse();
 
         response.setOk(true);
-        contactRepository.save(new Contact());
+        contactRepository.findById(urlId);
 
         servletResponse.sendRedirect("https://tinyurl.com");
         return response;

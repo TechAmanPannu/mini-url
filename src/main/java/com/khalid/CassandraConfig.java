@@ -25,12 +25,12 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 
     @Override
     protected String getContactPoints() {
-        return env.getProperty("");
+        return env.getProperty("spring.data.cassandra.contact-points");
     }
 
     @Override
     protected int getPort() {
-        return Integer.valueOf(env.getProperty(""));
+        return 9042;
     }
 
     @Override
