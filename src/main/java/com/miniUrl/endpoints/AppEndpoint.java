@@ -3,7 +3,7 @@ package com.miniUrl.endpoints;
 
 import com.miniUrl.dao.ContactDao;
 import com.miniUrl.entity.Contact;
-import com.miniUrl.model.response.ApiResponse;
+import com.miniUrl.model.response.api.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 public class AppEndpoint {

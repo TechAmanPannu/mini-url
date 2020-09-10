@@ -1,7 +1,8 @@
-package com.miniUrl.model.response;
+package com.miniUrl.model.response.api;
 
 
 import com.miniUrl.exception.enums.ErrorCode;
+import com.miniUrl.model.response.ApiErrorModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
