@@ -11,7 +11,12 @@ import org.springframework.data.cassandra.core.mapping.Table;
 public class Contact {
 
     @PrimaryKey
-    private String Id;
+    private String id;
 
     private String email;
+
+    public Contact(String id, String email) {
+        this.id = id;
+        this.email = email;
+    }
 }

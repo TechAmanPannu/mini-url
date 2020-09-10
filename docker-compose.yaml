@@ -1,0 +1,16 @@
+version: '3'
+services: # Containers
+
+  cassandra-server: # cassandra container
+    image: 'cassandra'
+
+  server:  # Java server container
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      -  "8080:8080"
+    restart: on-failure
+    environment:
+      - CASSANDRA_HOST=cassandra-server
+      - CASSANDRA_PORT=9042

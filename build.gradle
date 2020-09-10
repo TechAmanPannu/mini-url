@@ -25,6 +25,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
 
     //lombok
@@ -39,3 +40,9 @@ dependencies {
     //test
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
+//def envTarget = $System.env.envTarget;
+//
+//task preBuild {
+//    println 'Building Mini-Url App for Environment : ' + envTarget
+//}

@@ -11,4 +11,7 @@ public interface ContactRepository extends CassandraRepository<Contact, String> 
 
     @Override
     Optional<Contact> findById(String id);
+
+    @Override
+    Contact save(Contact entity);
 }
