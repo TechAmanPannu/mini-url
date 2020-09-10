@@ -1,10 +1,9 @@
 package com.miniUrl.endpoints;
 
 
-
+import com.miniUrl.dao.ContactDao;
 import com.miniUrl.entity.Contact;
 import com.miniUrl.model.response.ApiResponse;
-import com.miniUrl.repositories.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +17,7 @@ import java.util.Optional;
 public class AppEndpoint {
 
     @Autowired
-    private ContactRepository contactRepository;
+    private ContactDao contactDao;
 
     @GetMapping(path = "/{urlId}")
     public ApiResponse test(@RequestParam(defaultValue = "", name = "urlId") String urlId, HttpServletResponse servletResponse) throws IOException {
@@ -26,11 +25,10 @@ public class AppEndpoint {
         ApiResponse response  = new ApiResponse();
 
         response.setOk(true);
-        contactRepository.save(new Contact("userId2", "amandeep.pannu@gmail.com"));
+        contactDao.save(new Contact("userId1", "aman.pannu@gmail.com"));
 
-        Optional<Contact> optional = contactRepository.findById("userId");
-        System.out.println("contact"+optional.get());
-        servletResponse.sendRedirect("https://tinyurl.com");
+        Contact contact = contactDao.getById("userId1");
+        response.add("contact", contact);
         return response;
     }
 }
