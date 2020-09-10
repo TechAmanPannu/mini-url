@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: aman8859/spring_cassandra:2.0
+          image: aman8859/mini-url:latest
+          imagePullPolicy: Always
           ports:
            - containerPort: 8080
