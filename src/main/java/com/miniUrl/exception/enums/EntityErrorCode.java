@@ -1,4 +1,4 @@
-package com.khalid.exception.enums;
+package com.miniUrl.exception.enums;
 
 public enum EntityErrorCode implements ErrorCode {
 

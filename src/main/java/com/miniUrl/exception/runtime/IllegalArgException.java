@@ -1,7 +1,7 @@
-package com.khalid.exception.runtime;
+package com.miniUrl.exception.runtime;
 
 
-import com.khalid.exception.enums.ErrorCode;
+import com.miniUrl.exception.enums.ErrorCode;
 
 public class IllegalArgException extends AbstractRuntimeException {
 

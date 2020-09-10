@@ -1,4 +1,4 @@
-package com.khalid.model.response;
+package com.miniUrl.model.response;
 
 import lombok.Data;
 

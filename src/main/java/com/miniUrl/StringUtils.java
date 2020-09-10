@@ -1,4 +1,4 @@
-package com.khalid;
+package com.miniUrl;
 
 public  class StringUtils {
 

@@ -1,4 +1,4 @@
-package com.khalid;
+package com.miniUrl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

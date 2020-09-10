@@ -1,7 +1,7 @@
-package com.khalid.exception;
+package com.miniUrl.exception;
 
 
-import com.khalid.exception.enums.ErrorCode;
+import com.miniUrl.exception.enums.ErrorCode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

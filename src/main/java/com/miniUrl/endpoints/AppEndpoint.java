@@ -1,14 +1,12 @@
-package com.khalid.endpoints;
+package com.miniUrl.endpoints;
 
 
 
-import com.khalid.entity.Contact;
-import com.khalid.model.response.ApiResponse;
-import com.khalid.repositories.ContactRepository;
+import com.miniUrl.model.response.ApiResponse;
+import com.miniUrl.repositories.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;

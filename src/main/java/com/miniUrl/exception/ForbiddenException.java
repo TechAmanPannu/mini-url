@@ -1,7 +1,7 @@
-package com.khalid.exception;
+package com.miniUrl.exception;
 
 
-import com.khalid.exception.enums.ErrorCode;
+import com.miniUrl.exception.enums.ErrorCode;
 
 public class ForbiddenException extends AbstractException {
 

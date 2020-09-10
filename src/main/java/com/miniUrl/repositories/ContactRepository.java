@@ -1,6 +1,6 @@
-package com.khalid.repositories;
+package com.miniUrl.repositories;
 
-import com.khalid.entity.Contact;
+import com.miniUrl.entity.Contact;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 

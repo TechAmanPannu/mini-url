@@ -1,4 +1,4 @@
-package com.khalid.entity;
+package com.miniUrl.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

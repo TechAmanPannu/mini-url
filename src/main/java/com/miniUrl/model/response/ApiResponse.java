@@ -1,7 +1,7 @@
-package com.khalid.model.response;
+package com.miniUrl.model.response;
 
 
-import com.khalid.exception.enums.ErrorCode;
+import com.miniUrl.exception.enums.ErrorCode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,4 +1,4 @@
-group 'khalid.zia.sample'
+group 'com.miniUrl'
 version '1.0'
 
 buildscript {
@@ -27,19 +27,15 @@ repositories {
 
 dependencies {
 
-    //
+    //lombok
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-
+    //spring and cassandra
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework.boot:spring-boot-starter-data-rest'
     compile 'org.springframework.boot:spring-boot-starter-data-cassandra'
 
-
-    // compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-   // compile 'org.springframework.boot:spring-boot-starter-security'
-  //  compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
-    //compile 'com.h2database:h2'
+    //test
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
