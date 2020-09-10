@@ -5,12 +5,14 @@ import com.miniUrl.dao.ContactDao;
 import com.miniUrl.entity.Contact;
 import com.miniUrl.model.response.api.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.server.ExportException;
 
 @RestController
 public class AppEndpoint {
@@ -23,11 +25,14 @@ public class AppEndpoint {
 
         ApiResponse response  = new ApiResponse();
 
-        response.setOk(true);
-        contactDao.save(new Contact("userId1", "aman.pannu@gmail.com"));
-
-        Contact contact = contactDao.getById("userId1");
-        response.add("contact", contact);
+        if(urlId != null)
+        throw new IOException("done with done");
+//
+//        response.setOk(true);
+//        contactDao.save(new Contact(null, "aman.pannu@gmail.com"));
+//
+//        Contact contact = contactDao.getById("userId1");
+//        response.add("contact", contact);
         return response;
     }
 }
