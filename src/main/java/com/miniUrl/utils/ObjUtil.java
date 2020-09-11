@@ -50,6 +50,9 @@ public final class ObjUtil {
 
     public static String getJson(Object object) {
 
+        if(object == null)
+            return null;
+
         try {
             return jacksonMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
