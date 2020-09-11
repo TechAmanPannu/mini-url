@@ -3,7 +3,7 @@ package com.miniUrl.utils;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
-public class Utils {
+public class ServerUtils {
 
     public static String getHost(HttpServletRequest request) {
 
