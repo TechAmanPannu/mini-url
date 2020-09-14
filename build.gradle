@@ -32,10 +32,11 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-    //spring and cassandra
+    //spring, cassandra and redis
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework.boot:spring-boot-starter-data-rest'
     compile 'org.springframework.boot:spring-boot-starter-data-cassandra'
+    compile 'org.springframework.boot:spring-boot-starter-data-redis'
 
     compile 'com.devskiller.friendly-id:friendly-id:1.1.0'
 
