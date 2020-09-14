@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @Data
-@NoArgsConstructor
 public class UrlRequest {
 
     @JsonProperty("url")

@@ -29,12 +29,13 @@ public class UrlDaoImpl implements UrlDao {
     public Url create(Url url) throws EntityException {
 
         Preconditions.checkArgument(url == null, "Invalid url to save");
-        System.out.println("url string : "+url.getUrl());
         Preconditions.checkArgument(ObjUtil.isBlank(url.getUrl()), "Invalid url string to create url");
 
         url.setAccessType("PUBLIC");
-        url.setCreatedAt(System.currentTimeMillis());
-        url.setId(RandomStringUtils.randomAlphabetic(8));
+        long time = System.currentTimeMillis();
+        url.setCreatedAt(time);
+        url.setModifiedAt(time);
+        url.setId(UUID.randomUUID().toString());
         url = save(url);
 
         if (url == null)
@@ -110,7 +111,6 @@ public class UrlDaoImpl implements UrlDao {
 
 
     private List<Url> getAllByIds(Set<String> ids){
-
         try{
             return urlRepository.findAllById(ids);
         }catch (Exception e){

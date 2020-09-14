@@ -21,12 +21,11 @@ public class UrlEndpoint extends BaseEndpoint {
     private UrlDao urlDao;
 
     @PostMapping
-    public ApiResponse createUrl(UrlRequest urlRequest) throws EntityException {
+    public ApiResponse createUrl(@RequestBody UrlRequest urlRequest) throws EntityException {
 
         ApiResponse response = new ApiResponse();
 
         Preconditions.checkArgument(urlRequest == null, "Invalid url request");
-
 
         Url url = urlDao.create(new Url(urlRequest.getUrl()));
 

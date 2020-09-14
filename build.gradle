@@ -37,8 +37,12 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-rest'
     compile 'org.springframework.boot:spring-boot-starter-data-cassandra'
 
+    compile 'com.devskiller.friendly-id:friendly-id:1.1.0'
+
     //test
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.cassandraunit', name: 'cassandra-unit-spring', version: '4.3.1.0'
+
 }
 
 //def envTarget = $System.env.envTarget;
