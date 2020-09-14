@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: aman8859/mini-url:1.2
-          imagePullPolicy: Never
+          image: aman8859/mini-url:2.4
+          imagePullPolicy: Always
           ports:
            - containerPort: 8080

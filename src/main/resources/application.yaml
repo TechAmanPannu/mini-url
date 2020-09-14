@@ -1,7 +1,0 @@
-redis:
-  master:
-    host: redis-master
-    port: 6379
-  slaves:
-    - host: redis-slave
-      port: 6379

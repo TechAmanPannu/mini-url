@@ -27,10 +27,11 @@ public class UrlEndpoint extends BaseEndpoint {
 
         Preconditions.checkArgument(urlRequest == null, "Invalid url request");
 
+        System.out.println("redis");
         Url url = urlDao.create(new Url(urlRequest.getUrl()));
 
         response.setOk(true);
-        response.add("url", url);
+        response.add("miniUrl", url.constructMiniUrl());
 
         return response;
     }

@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-@PropertySource({ "classpath:${envTarget:dev}-application.properties" })
+@PropertySource({ "prod-application.properties" })
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
     private static final String KEYSPACE =  "\"mini_url\"";

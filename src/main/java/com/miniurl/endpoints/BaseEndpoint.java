@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 public class BaseEndpoint {
 
     @Autowired
-    HttpServletRequest request;
+    protected HttpServletRequest httpRequest;
 
     @Autowired
-    HttpServletResponse response;
+    protected HttpServletResponse httpResponse;
 }

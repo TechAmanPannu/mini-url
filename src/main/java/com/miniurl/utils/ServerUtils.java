@@ -7,7 +7,6 @@ public final class ServerUtils {
     private ServerUtils(){}
 
     public static String getHost(HttpServletRequest request) {
-
         return removeServletPath(request.getRequestURL().toString(), request.getServletPath());
     }
 

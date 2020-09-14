@@ -5,8 +5,10 @@ import com.miniurl.entity.url.Url;
 import com.miniurl.entity.url.UrlCreatedInDescByUser;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
+import com.miniurl.redis.RedisService;
 import com.miniurl.repositories.url.UrlCreatedInDescByUserRepository;
 import com.miniurl.repositories.url.UrlRepository;
+import com.miniurl.utils.EncodeUtil;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,9 @@ public class UrlDaoImpl implements UrlDao {
     @Autowired
     private UrlCreatedInDescByUserRepository urlCreatedInDescByUserRepository;
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
     public Url create(Url url) throws EntityException {
 
@@ -36,7 +41,8 @@ public class UrlDaoImpl implements UrlDao {
         long time = System.currentTimeMillis();
         url.setCreatedAt(time);
         url.setModifiedAt(time);
-        url.setId(UUID.randomUUID().toString());
+        url.setId(EncodeUtil.Base62.encode(redisService.getNextCount()));
+        url.setMiniUrl("Just checking .."); // todo need to remove
         url = save(url);
 
         if (url == null)
@@ -50,11 +56,15 @@ public class UrlDaoImpl implements UrlDao {
             delete(url.getId());
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
         }
+
         return url;
     }
 
     @Override
     public Url save(Url url) {
+
+        Preconditions.checkArgument(url == null, "Invalid url to save");
+        Preconditions.checkArgument(ObjUtil.isBlank(url.getId()), "Invalid url id to save");
         try {
             return urlRepository.save(url);
         } catch (Exception e) {
