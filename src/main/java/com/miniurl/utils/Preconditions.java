@@ -6,6 +6,8 @@ import com.miniurl.exception.enums.ErrorCode;
 
 public final class Preconditions {
 
+    private Preconditions(){}
+
     public static void checkArgument(boolean expression) {
 
         if (expression)

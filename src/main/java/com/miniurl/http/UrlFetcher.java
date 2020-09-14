@@ -3,6 +3,7 @@ package com.miniurl.http;
 import java.io.*;
 import java.net.HttpURLConnection;
 
+// todo rewrite the complete functionality
 
 public class UrlFetcher {
 

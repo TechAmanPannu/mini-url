@@ -3,10 +3,12 @@ package com.miniurl.utils;
 import java.math.BigInteger;
 
 
-public class EncodeUtil {
+public final class EncodeUtil {
 
+    private EncodeUtil(){}
     public static class Base62 {
 
+        private Base62(){}
         public static final BigInteger BASE = BigInteger.valueOf(62);
         public static final String DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         public static final String REGEXP = "^[0-9A-Za-z]+$";

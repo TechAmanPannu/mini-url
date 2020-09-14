@@ -12,7 +12,7 @@ public class CollectionResponse<T> {
     private final String cursor;
 
     public static <T> Builder<T> builder() {
-        return new Builder();
+        return new Builder<>();
     }
 
     public CollectionResponse(Collection<T> items, String cursor) {
@@ -35,7 +35,7 @@ public class CollectionResponse<T> {
         }
 
         public CollectionResponse<T> build() {
-            return new CollectionResponse<T>(this.items, this.cursor);
+            return new CollectionResponse<>(this.items, this.cursor);
         }
     }
 }

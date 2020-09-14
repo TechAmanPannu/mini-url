@@ -5,11 +5,11 @@ import com.miniurl.entity.url.Url;
 import com.miniurl.entity.url.UrlCreatedInDescByUser;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
-import com.miniurl.repositories.url.UrlRepository;
 import com.miniurl.repositories.url.UrlCreatedInDescByUserRepository;
+import com.miniurl.repositories.url.UrlRepository;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
-import org.apache.commons.lang.RandomStringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UrlDaoImpl implements UrlDao {
 
     @Autowired
@@ -57,7 +58,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
             return urlRepository.save(url);
         } catch (Exception e) {
-            System.out.println("Exception while saving url :" + e.getMessage());
+            log.error("Exception while saving url :" , e.getMessage(), e);
             return null;
         }
     }
@@ -70,7 +71,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
             optional = urlRepository.findById(urlId);
         } catch (Exception e) {
-            System.out.println("Exception while fetching url :" + e.getMessage());
+           log.error("Exception while fetching url :" ,  e.getMessage(), e);
         }
         return optional.orElse(null);
     }
@@ -82,7 +83,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
             urlRepository.deleteById(urlId);
         } catch (Exception e) {
-            System.out.println("Exception while deleting url by Id:" + e.getMessage());
+           log.error("Exception while deleting url by Id:", e.getMessage(), e);
             return false;
         }
         return true;
@@ -114,7 +115,7 @@ public class UrlDaoImpl implements UrlDao {
         try{
             return urlRepository.findAllById(ids);
         }catch (Exception e){
-            System.out.println("Exception while fetching all urls by ids :"+e.getMessage());
+           log.error("Exception while fetching all urls by ids :", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -122,7 +123,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
            return urlCreatedInDescByUserRepository.findByUserIdAndCreatedAt(userId, createdAt);
         }catch (Exception e){
-            System.out.println("Exception while fetching urlCreatedInDescByUser with userId and createdAt"+ e.getMessage());
+            log.error("Exception while fetching urlCreatedInDescByUser with userId and createdAt", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -131,7 +132,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
             return urlCreatedInDescByUserRepository.save(urlCreatedInDescByUser);
         } catch (Exception e) {
-            System.out.println("Exception while creating urlCreatedInDescByUser : " + e.getMessage());
+             log.error("Exception while creating urlCreatedInDescByUser : " , e.getMessage(), e);
             return null;
         }
     }

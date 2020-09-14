@@ -1,7 +1,6 @@
 package com.miniurl.entity.url;
 
 
-import com.datastax.oss.driver.api.core.type.DataType;
 import com.miniurl.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;

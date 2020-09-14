@@ -5,6 +5,7 @@ import com.datastax.oss.driver.shaded.guava.common.hash.Hashing;
 
 public final class HashUtil {
 
+    private HashUtil(){}
     public static String sha256(String base) {
 
         if (ObjUtil.isBlank(base))

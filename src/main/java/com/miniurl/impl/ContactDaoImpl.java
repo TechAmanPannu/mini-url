@@ -5,7 +5,7 @@ import com.miniurl.entity.contact.Contact;
 import com.miniurl.repositories.contact.ContactRepository;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
-import groovy.util.logging.Slf4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +24,14 @@ public class ContactDaoImpl implements ContactDao {
         Preconditions.checkArgument(contact == null, "Invalid contact to save");
         Preconditions.checkArgument(ObjUtil.isBlank(contact.getId()), "Invalid id to save contact");
         Preconditions.checkArgument(ObjUtil.isBlank(contact.getEmail()), "Invalid email to save contact");
-        try { return contactRepository.save(contact); } catch (Exception e) { System.out.println("Exception while saving contact :"+e.getMessage());return null; } }
+        try { return contactRepository.save(contact); } catch (Exception e) { log.error("Exception while saving contact :", e.getMessage(), e); return null; } }
 
     @Override
     public Contact get(String id) {
 
         Preconditions.checkArgument(ObjUtil.isBlank(id), "Invalid id to fetch contact");
         Optional<Contact> optional = Optional.empty();
-        try { optional =  contactRepository.findById(id); }catch (Exception e){   System.out.println("Exception while fetching contact :"+e.getMessage()); }
+        try { optional =  contactRepository.findById(id); }catch (Exception e){   log.error("Exception while fetching contact :", e.getMessage(), e); }
         return optional.orElse(null);
     }
 }

@@ -13,6 +13,8 @@ import java.util.*;
 
 public final class ObjUtil {
 
+    private ObjUtil(){}
+
     @Autowired
     private static ObjectMapper jacksonMapper;
 
@@ -162,9 +164,9 @@ public final class ObjUtil {
         }
     }
 
-    public static <T> HashSet<T> getHashSet(List<T> listItem) {
+    public static <T> Set<T> getHashSet(List<T> listItem) {
 
-        return listItem != null ? new HashSet<T>(listItem) : new HashSet<T>();
+        return listItem != null ? new HashSet<>(listItem) : new HashSet<>();
     }
 
 

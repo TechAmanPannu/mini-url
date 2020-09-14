@@ -5,6 +5,7 @@ import com.miniurl.exception.enums.ApiErrorCode;
 import com.miniurl.exception.enums.EntityErrorCode;
 import com.miniurl.exception.enums.ErrorCode;
 import com.miniurl.model.response.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,14 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
+@Slf4j
 public class ExceptionMapper  extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(value = {Exception.class})
     protected ResponseEntity<Object> handle(Exception e, WebRequest request) {
 
-        System.out.println("Generic Exception : {}"+ e.getMessage());
+        log.error("Generic Exception : {}"+ e.getMessage());
         e.printStackTrace();
 
         ApiResponse resp = new ApiResponse(false, ApiErrorCode.INTERNAL_SERVER_ERROR, "something went wrong on our end");
