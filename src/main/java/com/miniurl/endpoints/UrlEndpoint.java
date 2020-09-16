@@ -7,6 +7,7 @@ import com.miniurl.model.request.UrlRequest;
 import com.miniurl.model.response.ApiResponse;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
+import com.miniurl.utils.ServerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,9 @@ public class UrlEndpoint extends BaseEndpoint {
         ApiResponse response = new ApiResponse();
         Preconditions.checkArgument(urlRequest == null, "Invalid url request");
 
-        String miniUrl = urlDao.create(new Url(urlRequest.getUrl()));
+        String miniUrl = urlDao.create(urlRequest);
         response.setOk(true);
-        response.add("miniUrl", miniUrl);
+        response.add("miniUrl", ServerUtils.getHost(httpRequest)+"/"+miniUrl);
 
         return response;
     }

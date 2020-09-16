@@ -5,6 +5,7 @@ import com.miniurl.entity.url.Url;
 import com.miniurl.entity.url.UrlCreatedInDescByUser;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
+import com.miniurl.model.request.UrlRequest;
 import com.miniurl.redis.KeyCounterService;
 import com.miniurl.repositories.url.UrlCreatedInDescByUserRepository;
 import com.miniurl.repositories.url.UrlRepository;
@@ -32,24 +33,23 @@ public class UrlDaoImpl implements UrlDao {
     private KeyCounterService keyCounterService;
 
     @Override
-    public String create(Url url) throws EntityException {
+    public String create(UrlRequest urlRequest) throws EntityException {
 
-        Preconditions.checkArgument(url == null, "Invalid url to save");
-        Preconditions.checkArgument(ObjUtil.isBlank(url.getUrl()), "Invalid url string to create url");
+        Preconditions.checkArgument(urlRequest == null, "Invalid url to save");
+        Preconditions.checkArgument(ObjUtil.isBlank(urlRequest.getUrl()), "Invalid url string to create url");
 
+        Url url = new Url(urlRequest.getUrl());
         url.setAccessType("PUBLIC");
-        long time = System.currentTimeMillis();
-        url.setCreatedAt(time);
-        url.setModifiedAt(time);
         url.setId(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()));
-        url.setMiniUrl(url.constructMiniUrl());
+        url.setCreatedBy(urlRequest.getUserId());
+
         url = save(url);
 
         if (url == null)
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
 
         if (ObjUtil.isBlank(url.getCreatedBy()))
-            return url.getMiniUrl();
+            return url.getId();
 
         UrlCreatedInDescByUser urlCreatedInDescByUser = save(new UrlCreatedInDescByUser(url.getCreatedBy(), url.getCreatedAt(), url.getId()));
         if (urlCreatedInDescByUser == null) {
@@ -57,7 +57,7 @@ public class UrlDaoImpl implements UrlDao {
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
         }
 
-        return url.getMiniUrl();
+        return url.getId();
     }
 
     @Override
@@ -65,6 +65,12 @@ public class UrlDaoImpl implements UrlDao {
 
         Preconditions.checkArgument(url == null, "Invalid url to save");
         Preconditions.checkArgument(ObjUtil.isBlank(url.getId()), "Invalid url id to save");
+
+        long time = System.currentTimeMillis();
+        if(url.getCreatedAt() <= 0)
+            url.setCreatedAt(time);
+        url.setModifiedAt(time);
+
         try {
             return urlRepository.save(url);
         } catch (Exception e) {

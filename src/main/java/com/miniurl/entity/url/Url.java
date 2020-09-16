@@ -5,6 +5,7 @@ import com.miniurl.constants.CommonConstants;
 import com.miniurl.entity.BaseEntity;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
+import com.miniurl.utils.ServerUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,11 +34,7 @@ public class Url extends BaseEntity {
     private Set<String> users;
 
     @CassandraType(type = CassandraType.Name.TEXT)
-
     private String url;
-
-    @Transient
-    private String miniUrl;
 
     @CassandraType(type = CassandraType.Name.TEXT) //todo need to convert it to enums
     @Column("access_type")
@@ -53,6 +50,7 @@ public class Url extends BaseEntity {
 
     public String constructMiniUrl() {
         Preconditions.checkArgument(ObjUtil.isBlank(id), "invalid id to construct mini url");
+
         StringBuilder sb = new StringBuilder(CommonConstants.APP_URL);
         sb.append("/");
         sb.append(id);
