@@ -1,10 +1,13 @@
 package com.miniurl;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import io.lettuce.core.ReadFrom;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -13,13 +16,8 @@ import org.springframework.data.redis.connection.RedisStaticMasterReplicaConfigu
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import java.io.Serializable;
-import java.util.List;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.*;
 
 @Data
 @Slf4j
@@ -29,6 +27,9 @@ public class RedisConfig {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
@@ -44,27 +45,20 @@ public class RedisConfig {
 
     }
 
-    @Bean
-    public RedisTemplate redisClient(){
-
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
-        JdkSerializationRedisSerializer jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();
-        template.setConnectionFactory(redisConnectionFactory());
-        template.setKeySerializer(stringSerializer);
-        template.setHashKeySerializer(stringSerializer);
-        template.setValueSerializer(jdkSerializationRedisSerializer);
-        template.setHashValueSerializer(jdkSerializationRedisSerializer);
-        template.setEnableTransactionSupport(true);
-        template.afterPropertiesSet();
-        return template;
-//        RedisTemplate<String, Serializable> template = new RedisTemplate<>();
-//        template.setKeySerializer(new StringRedisSerializer());
-//        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-//        template.setDefaultSerializer(new StringRedisSerializer());
-//        template.setEnableDefaultSerializer(true);
-//        template.setConnectionFactory(this.redisConnectionFactory());
-//        return template;
-    }
+        @Bean
+        public RedisTemplate<String, String> redisTemplate() {
+            ObjectMapper om = new ObjectMapper();
+            om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+            om.activateDefaultTyping(BasicPolymorphicTypeValidator.builder().build(), ObjectMapper.DefaultTyping.NON_FINAL);
+            // redis serialize
+            Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
+            jackson2JsonRedisSerializer.setObjectMapper(om);
+            StringRedisTemplate template = new StringRedisTemplate(redisConnectionFactory());
+            template.setValueSerializer(jackson2JsonRedisSerializer);
+            template.setHashKeySerializer(jackson2JsonRedisSerializer);
+            template.setHashValueSerializer(jackson2JsonRedisSerializer);
+            template.afterPropertiesSet();
+            return template;
+        }
 
 }

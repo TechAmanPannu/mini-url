@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
+import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 
 import java.io.Serializable;
@@ -19,8 +20,10 @@ public class BaseEntity implements Serializable {
     protected String id;
 
     @CassandraType(type = CassandraType.Name.BIGINT)
+    @Column(value = "created_at")
     protected long createdAt;
 
     @CassandraType(type = CassandraType.Name.BIGINT)
+    @Column(value = "modified_at")
     protected long modifiedAt;
 }

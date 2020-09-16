@@ -19,6 +19,10 @@ public final class ObjUtil {
         JacksonConfig.setConfig(jacksonMapper);
     }
 
+    public static ObjectMapper getJacksonMapper(){
+        return jacksonMapper;
+    }
+
     public static boolean isNullOrEmpty(String value) {
         return (value == null || value.length() <= 0);
     }
@@ -87,6 +91,18 @@ public final class ObjUtil {
         try {
             return jacksonMapper.readValue(json,
                     new TypeReference<HashSet<String>>() {
+                    });
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+
+    public static  List<Object> getListFromJson(String json){
+
+        try {
+            return jacksonMapper.readValue(json,
+                    new TypeReference<ArrayList<Object>>() {
                     });
         } catch (IOException e) {
             return null;

@@ -24,14 +24,11 @@ public class UrlEndpoint extends BaseEndpoint {
     public ApiResponse createUrl(@RequestBody UrlRequest urlRequest) throws EntityException {
 
         ApiResponse response = new ApiResponse();
-
         Preconditions.checkArgument(urlRequest == null, "Invalid url request");
 
-        System.out.println("redis");
-        Url url = urlDao.create(new Url(urlRequest.getUrl()));
-
+        String miniUrl = urlDao.create(new Url(urlRequest.getUrl()));
         response.setOk(true);
-        response.add("miniUrl", url.constructMiniUrl());
+        response.add("miniUrl", miniUrl);
 
         return response;
     }

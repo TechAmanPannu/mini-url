@@ -5,7 +5,7 @@ import com.miniurl.entity.url.Url;
 import com.miniurl.entity.url.UrlCreatedInDescByUser;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
-import com.miniurl.redis.RedisService;
+import com.miniurl.redis.KeyCounterService;
 import com.miniurl.repositories.url.UrlCreatedInDescByUserRepository;
 import com.miniurl.repositories.url.UrlRepository;
 import com.miniurl.utils.EncodeUtil;
@@ -29,10 +29,10 @@ public class UrlDaoImpl implements UrlDao {
     private UrlCreatedInDescByUserRepository urlCreatedInDescByUserRepository;
 
     @Autowired
-    private RedisService redisService;
+    private KeyCounterService keyCounterService;
 
     @Override
-    public Url create(Url url) throws EntityException {
+    public String create(Url url) throws EntityException {
 
         Preconditions.checkArgument(url == null, "Invalid url to save");
         Preconditions.checkArgument(ObjUtil.isBlank(url.getUrl()), "Invalid url string to create url");
@@ -41,15 +41,15 @@ public class UrlDaoImpl implements UrlDao {
         long time = System.currentTimeMillis();
         url.setCreatedAt(time);
         url.setModifiedAt(time);
-        url.setId(EncodeUtil.Base62.encode(redisService.getNextCount()));
-        url.setMiniUrl("Just checking .."); // todo need to remove
+        url.setId(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()));
+        url.setMiniUrl(url.constructMiniUrl());
         url = save(url);
 
         if (url == null)
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
 
         if (ObjUtil.isBlank(url.getCreatedBy()))
-            return url;
+            return url.getMiniUrl();
 
         UrlCreatedInDescByUser urlCreatedInDescByUser = save(new UrlCreatedInDescByUser(url.getCreatedBy(), url.getCreatedAt(), url.getId()));
         if (urlCreatedInDescByUser == null) {
@@ -57,7 +57,7 @@ public class UrlDaoImpl implements UrlDao {
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
         }
 
-        return url;
+        return url.getMiniUrl();
     }
 
     @Override

@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
+import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
 import java.io.Serializable;
 import java.util.Set;
@@ -25,22 +26,26 @@ public class Url extends BaseEntity {
     private static final long serialVersionUID = 2385642147284863564L;
 
     @CassandraType(type = CassandraType.Name.TEXT)
+    @Column(value = "created_by")
     private String createdBy;
 
     @CassandraType(type = CassandraType.Name.SET,  typeArguments = { CassandraType.Name.TEXT })
     private Set<String> users;
 
     @CassandraType(type = CassandraType.Name.TEXT)
+
     private String url;
 
     @Transient
     private String miniUrl;
 
     @CassandraType(type = CassandraType.Name.TEXT) //todo need to convert it to enums
+    @Column("access_type")
     private String accessType;
 
     @CassandraType(type = CassandraType.Name.BIGINT)
-    private long expiresAt;
+    @Column("expires_at")
+    private Long expiresAt;
 
     public Url(String url){
         this.url = url;

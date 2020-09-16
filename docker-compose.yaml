@@ -14,3 +14,9 @@ services: # Containers
     environment:
       - CASSANDRA_HOST=cassandra-server
       - CASSANDRA_PORT=9042
+
+  redis-master: # Redis container
+    image: 'k8s.gcr.io/redis:e2e'
+
+  redis-slave: # Redis container
+    image: 'gcr.io/google_samples/gb-redisslave:v3'
