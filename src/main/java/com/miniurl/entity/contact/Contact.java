@@ -14,7 +14,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class Contact extends BaseEntity implements Serializable {
+public class Contact extends BaseEntity {
+
+    private static final long serialVersionUID = 5944698829458544845L;
 
     private String email;
 

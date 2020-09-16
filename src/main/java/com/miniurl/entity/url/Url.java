@@ -20,7 +20,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class Url extends BaseEntity implements Serializable {
+public class Url extends BaseEntity {
+
+    private static final long serialVersionUID = 2385642147284863564L;
 
     @CassandraType(type = CassandraType.Name.TEXT)
     private String createdBy;

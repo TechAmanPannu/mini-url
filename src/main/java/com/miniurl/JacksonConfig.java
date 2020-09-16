@@ -13,9 +13,13 @@ public class JacksonConfig {
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
+        setConfig(mapper);
+        return mapper;
+    }
+
+    public static void setConfig(ObjectMapper mapper){
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        return mapper;
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
     }
 }

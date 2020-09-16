@@ -3,8 +3,7 @@ package com.miniurl.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.miniurl.JacksonConfig;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -13,10 +12,12 @@ import java.util.*;
 
 public final class ObjUtil {
 
-    private ObjUtil(){}
-
-    @Autowired
     private static ObjectMapper jacksonMapper;
+
+    static {
+        jacksonMapper = new ObjectMapper();
+        JacksonConfig.setConfig(jacksonMapper);
+    }
 
     public static boolean isNullOrEmpty(String value) {
         return (value == null || value.length() <= 0);

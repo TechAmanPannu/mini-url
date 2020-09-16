@@ -14,6 +14,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceClientConfigurat
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.Serializable;
@@ -45,12 +47,24 @@ public class RedisConfig {
     @Bean
     public RedisTemplate redisClient(){
 
-        RedisTemplate<String, Serializable> template = new RedisTemplate<>();
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        template.setDefaultSerializer(new StringRedisSerializer());
-        template.setConnectionFactory(this.redisConnectionFactory());
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+        JdkSerializationRedisSerializer jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();
+        template.setConnectionFactory(redisConnectionFactory());
+        template.setKeySerializer(stringSerializer);
+        template.setHashKeySerializer(stringSerializer);
+        template.setValueSerializer(jdkSerializationRedisSerializer);
+        template.setHashValueSerializer(jdkSerializationRedisSerializer);
+        template.setEnableTransactionSupport(true);
+        template.afterPropertiesSet();
         return template;
+//        RedisTemplate<String, Serializable> template = new RedisTemplate<>();
+//        template.setKeySerializer(new StringRedisSerializer());
+//        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+//        template.setDefaultSerializer(new StringRedisSerializer());
+//        template.setEnableDefaultSerializer(true);
+//        template.setConnectionFactory(this.redisConnectionFactory());
+//        return template;
     }
 
 }
