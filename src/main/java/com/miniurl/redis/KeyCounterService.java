@@ -26,8 +26,8 @@ public class KeyCounterService {
         BigInteger initialCount = new BigInteger(String.valueOf(initCount));
         String countKey = RedisKeyService.getURLCounterKey();
         final ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        if(ops.get(countKey) == null) // todo need to remove this condition once the app is live. counter should be available , if not throw Exception
-            ops.set(RedisKeyService.getURLCounterKey(), initialCount.toString());
+//        if(ops.get(countKey) == null) // todo need to remove this condition once the app is live. counter should be available , if not throw Exception
+//            ops.set(RedisKeyService.getURLCounterKey(), initialCount.toString());
         String result = String.valueOf(ops.get(countKey));
         if(result == null)
             throw new NotFoundException("counter not found, something is wrong");
