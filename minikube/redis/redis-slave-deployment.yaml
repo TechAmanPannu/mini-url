@@ -38,3 +38,12 @@ spec:
               value: env
           ports:
             - containerPort: 6379
+          volumeMounts:
+            - mountPath: /redis-slave-data
+              name: redis-data
+      volumes:
+        - name: redis-data
+          storageos:
+                  # The `redis-vol01` volume must already exist within StorageOS in the `default` namespace.
+            volumeName: redis-vol01
+            fsType: ext4

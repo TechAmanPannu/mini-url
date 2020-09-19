@@ -27,3 +27,12 @@ spec:
               memory: 100Mi
           ports:
             - containerPort: 6379
+          volumeMounts:
+            - mountPath: /redis-master-data
+              name: redis-data
+      volumes:
+        - name: redis-data
+          storageos:
+                  # The `redis-vol01` volume must already exist within StorageOS in the `default` namespace.
+           volumeName: redis-vol01
+           fsType: ext4

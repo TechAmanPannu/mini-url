@@ -21,7 +21,7 @@ public class KeyCounterService {
 
     public BigInteger getNextKeyCount() throws NotFoundException{
 
-        final Long initCount = 10000L;
+        final Long initCount = 100000000000L;
         final int addCountBy = 1;
         BigInteger initialCount = new BigInteger(String.valueOf(initCount));
         String countKey = RedisKeyService.getURLCounterKey();
