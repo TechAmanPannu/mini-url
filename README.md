@@ -1,5 +1,8 @@
 # Mini Url
 
+Basic setup Minikube
+1. Install Minikube
+3. Run minikube start --vm=true --memory=6GB
 
 How to Start Locally:
 
