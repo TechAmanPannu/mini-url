@@ -23,5 +23,5 @@ public interface UrlDao {
 
     List<Url> getByIds(Set<String> ids);
 
-    List<Url> getExpiredsUrls(String createdBy, long byTime);
+    List<Url> getExpiredUrls(String createdBy, long byTime);
 }

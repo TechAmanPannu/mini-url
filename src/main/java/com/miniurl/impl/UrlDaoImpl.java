@@ -138,7 +138,7 @@ public class UrlDaoImpl implements UrlDao {
     }
 
     @Override
-    public List<Url> getExpiredsUrls(String createdBy, long byTime) {
+    public List<Url> getExpiredUrls(String createdBy, long byTime) {
 
         Preconditions.checkArgument(ObjUtil.isBlank(createdBy), "Invalid userId to get urls");
 

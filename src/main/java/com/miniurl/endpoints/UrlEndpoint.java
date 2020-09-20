@@ -55,7 +55,7 @@ public class UrlEndpoint extends BaseEndpoint {
 
         ApiResponse response = new ApiResponse();
 
-        List<Url> urls = urlDao.getExpiredsUrls(userId, System.currentTimeMillis());
+        List<Url> urls = urlDao.getExpiredUrls(userId, System.currentTimeMillis());
 
         response.add("urls", urls);
 
