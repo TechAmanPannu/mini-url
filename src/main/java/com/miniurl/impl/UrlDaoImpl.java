@@ -14,6 +14,9 @@ import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -43,7 +46,7 @@ public class UrlDaoImpl implements UrlDao {
         url.setId(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()));
         url.setCreatedBy(urlRequest.getUserId());
 
-        url = save(url);
+        url = save(url.getId(), url);
 
         if (url == null)
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
@@ -60,12 +63,15 @@ public class UrlDaoImpl implements UrlDao {
         return url.getId();
     }
 
+
+    @CachePut(value = "url", key = "#id")
     @Override
-    public Url save(Url url) {
+    public Url save(String id, Url url) {
 
         Preconditions.checkArgument(url == null, "Invalid url to save");
-        Preconditions.checkArgument(ObjUtil.isBlank(url.getId()), "Invalid url id to save");
+        Preconditions.checkArgument(ObjUtil.isBlank(id), "Invalid url id to save");
 
+        url.setId(id);
         long time = System.currentTimeMillis();
         if(url.getCreatedAt() <= 0)
             url.setCreatedAt(time);
@@ -80,18 +86,20 @@ public class UrlDaoImpl implements UrlDao {
     }
 
 
+    @Cacheable(value = "url", key = "#id")
     @Override
-    public Url get(String urlId) {
-        Preconditions.checkArgument(ObjUtil.isBlank(urlId), "Invalid urlId to fetch url");
+    public Url get(String id) {
+        Preconditions.checkArgument(ObjUtil.isBlank(id), "Invalid urlId to fetch url");
         Optional<Url> optional = Optional.empty();
         try {
-            optional = urlRepository.findById(urlId);
+            optional = urlRepository.findById(id);
         } catch (Exception e) {
            log.error("Exception while fetching url :" ,  e.getMessage(), e);
         }
         return optional.orElse(null);
     }
 
+    @CacheEvict(value = "url", key = "#url.id")
     @Override
     public boolean delete(String urlId) {
 

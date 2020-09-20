@@ -11,9 +11,9 @@ import java.util.Set;
 @Service
 public interface UrlDao {
 
-    Url save(Url url);
+    Url save(String id, Url url);
 
-    Url get(String urlId);
+    Url get(String id);
 
     String create(UrlRequest url) throws EntityException;
 
