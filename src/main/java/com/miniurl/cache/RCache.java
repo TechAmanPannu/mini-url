@@ -4,9 +4,11 @@ import com.miniurl.utils.ObjUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class RCache implements RCacher{
 
     @Autowired
@@ -20,6 +22,16 @@ public class RCache implements RCacher{
 
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value, expiryInSec, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void put(String key, Object value) {
+
+        if(ObjUtil.isBlank(key) || value == null)
+            return;
+
+        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
+        ops.set(key, value);
     }
 
     @Override
