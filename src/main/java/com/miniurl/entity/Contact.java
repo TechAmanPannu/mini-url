@@ -1,4 +1,4 @@
-package com.miniurl.entity.contact;
+package com.miniurl.entity;
 
 import com.miniurl.entity.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -20,5 +20,6 @@ public class Contact extends BaseEntity {
 
     private String email;
 
+    private String password;
 
 }

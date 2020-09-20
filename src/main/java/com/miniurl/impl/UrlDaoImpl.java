@@ -1,9 +1,10 @@
 package com.miniurl.impl;
 
 import com.miniurl.dao.UrlDao;
-import com.miniurl.entity.url.Url;
-import com.miniurl.entity.url.UrlCreatedInDescByUser;
-import com.miniurl.entity.url.UrlExpiresAtWithCreatedUser;
+import com.miniurl.entity.Url;
+import com.miniurl.entity.indexes.url.UrlCreatedInDescByUser;
+import com.miniurl.entity.indexes.url.UrlExpiresAtWithCreatedUser;
+import com.miniurl.enums.AccessType;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
 import com.miniurl.model.request.UrlRequest;
@@ -47,7 +48,7 @@ public class UrlDaoImpl implements UrlDao {
         Preconditions.checkArgument(ObjUtil.isBlank(urlRequest.getUrl()), "Invalid url string to create url");
 
         Url url = new Url(urlRequest.getUrl());
-        url.setAccessType("PUBLIC");
+        url.setAccessType(AccessType.PUBLIC.toString());
         url.setCreatedBy(urlRequest.getUserId());
         url.setExpiresAt((20 * (86400) + System.currentTimeMillis())); // default expiry for 20 days;
         url = save(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()), url);

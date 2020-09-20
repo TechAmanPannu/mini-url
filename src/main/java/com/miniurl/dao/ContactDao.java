@@ -1,6 +1,6 @@
 package com.miniurl.dao;
 
-import com.miniurl.entity.contact.Contact;
+import com.miniurl.entity.Contact;
 import org.springframework.stereotype.Service;
 
 @Service

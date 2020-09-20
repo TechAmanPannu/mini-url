@@ -1,6 +1,6 @@
 package com.miniurl.repositories.url;
 
-import com.miniurl.entity.url.UrlCreatedInDescByUser;
+import com.miniurl.entity.indexes.url.UrlCreatedInDescByUser;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 

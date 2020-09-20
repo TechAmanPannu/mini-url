@@ -1,6 +1,6 @@
 package com.miniurl.repositories.contact;
 
-import com.miniurl.entity.contact.Contact;
+import com.miniurl.entity.Contact;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

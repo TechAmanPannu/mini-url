@@ -1,9 +1,8 @@
 package com.miniurl.endpoints;
 
 import com.miniurl.dao.UrlDao;
-import com.miniurl.entity.url.Url;
+import com.miniurl.entity.Url;
 import com.miniurl.exception.NotFoundException;
-import com.miniurl.utils.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,4 +1,4 @@
-package com.miniurl.entity.url;
+package com.miniurl.entity.indexes.url;
 
 
 import lombok.AllArgsConstructor;

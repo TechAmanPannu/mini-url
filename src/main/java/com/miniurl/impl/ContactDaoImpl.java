@@ -1,7 +1,7 @@
 package com.miniurl.impl;
 
 import com.miniurl.dao.ContactDao;
-import com.miniurl.entity.contact.Contact;
+import com.miniurl.entity.Contact;
 import com.miniurl.repositories.contact.ContactRepository;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
