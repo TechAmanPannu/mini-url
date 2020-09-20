@@ -15,17 +15,15 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(value = "url_created_in_desc_by_user")
 public class UrlCreatedInDescByUser implements Serializable {
 
     private static final long serialVersionUID = 3330424151938847842L;
 
-    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
-    @Column(value = "user_id")
-    private String userId;
+    @PrimaryKeyColumn(value = "created_by", type = PrimaryKeyType.PARTITIONED)
+    private String createdBy;
 
-    @PrimaryKeyColumn(type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
-    @Column(value = "created_at")
+    @PrimaryKeyColumn(value = "created_at", type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
     private long createdAt;
 
     @Column(value = "url_Id")

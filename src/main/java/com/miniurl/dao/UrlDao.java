@@ -19,7 +19,7 @@ public interface UrlDao {
 
     boolean delete(String id);
 
-    List<Url> getByCreatedAtDesc(String userId, long createdAt);
+    List<Url> getByCreatedAtDesc(String createdBy, long createdAt);
 
     List<Url> getByIds(Set<String> ids);
 }

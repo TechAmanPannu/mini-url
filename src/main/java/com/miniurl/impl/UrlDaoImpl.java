@@ -43,8 +43,8 @@ public class UrlDaoImpl implements UrlDao {
 
         Url url = new Url(urlRequest.getUrl());
         url.setAccessType("PUBLIC");
-
         url.setCreatedBy(urlRequest.getUserId());
+        url.setExpiresAt((20 * (86400) + System.currentTimeMillis())); // default expiry for 20 days;
 
         url = save(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()), url);
 
@@ -114,14 +114,14 @@ public class UrlDaoImpl implements UrlDao {
     }
 
     @Override
-    public List<Url> getByCreatedAtDesc(String userId, long createdAt) {
+    public List<Url> getByCreatedAtDesc(String createdBy, long createdAt) {
 
-        Preconditions.checkArgument(ObjUtil.isBlank(userId), "Invalid userId to get urls");
+        Preconditions.checkArgument(ObjUtil.isBlank(createdBy), "Invalid userId to get urls");
 
         if (createdAt <= 0)
             createdAt = System.currentTimeMillis();
 
-        List<UrlCreatedInDescByUser> urlCreatedInDescByUsers = getByUserIdAndCreated(userId, createdAt);
+        List<UrlCreatedInDescByUser> urlCreatedInDescByUsers = getByUserIdAndCreatedAt(createdBy, createdAt);
         if(ObjUtil.isNullOrEmpty(urlCreatedInDescByUsers))
             return new ArrayList<>();
 
@@ -143,9 +143,9 @@ public class UrlDaoImpl implements UrlDao {
             return new ArrayList<>();
         }
     }
-    private List<UrlCreatedInDescByUser> getByUserIdAndCreated(String userId, long createdAt) {
+    private List<UrlCreatedInDescByUser> getByUserIdAndCreatedAt(String userId, long createdAt) {
         try {
-           return urlCreatedInDescByUserRepository.findByUserIdAndCreatedAt(userId, createdAt);
+           return urlCreatedInDescByUserRepository.findByCreatedByAndCreatedAtLessThan(userId, createdAt);
         }catch (Exception e){
             log.error("Exception while fetching urlCreatedInDescByUser with userId and createdAt", e.getMessage(), e);
             return new ArrayList<>();

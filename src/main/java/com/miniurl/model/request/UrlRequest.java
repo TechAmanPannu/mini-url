@@ -10,9 +10,6 @@ public class UrlRequest {
     @JsonProperty("url")
     private String url;
 
-    @JsonProperty("host")
-    private String host;
-
     @JsonProperty("userId")
     private String userId;
 }
