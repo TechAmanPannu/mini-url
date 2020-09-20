@@ -32,3 +32,6 @@ helm install mini-url-redis bitnami/redis \--set cluster.slaveCount=3 \
 
 3 . Upgrade Redis : helm upgrade <arguements>
 
+#Cassndra Query Limit
+https://www.datastax.com/blog/2015/06/deep-look-cql-where-clause
+

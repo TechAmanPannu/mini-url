@@ -13,4 +13,6 @@ public interface UrlCreatedInDescByUserRepository extends CassandraRepository<Ur
     UrlCreatedInDescByUser save(UrlCreatedInDescByUser urlCreatedInDescByUser);
 
     List<UrlCreatedInDescByUser> findByCreatedByAndCreatedAtLessThan(String createdBy, long createdAt);
+
+
 }

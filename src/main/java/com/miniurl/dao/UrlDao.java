@@ -22,4 +22,6 @@ public interface UrlDao {
     List<Url> getByCreatedAtDesc(String createdBy, long createdAt);
 
     List<Url> getByIds(Set<String> ids);
+
+    List<Url> getExpiredsUrls(String createdBy, long byTime);
 }

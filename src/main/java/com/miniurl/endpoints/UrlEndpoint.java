@@ -50,4 +50,20 @@ public class UrlEndpoint extends BaseEndpoint {
         return response;
     }
 
+    @GetMapping("/user/{userId}/expired")
+    public ApiResponse getExpiredUserUrls(@PathVariable(value = "userId") String userId) {
+
+        ApiResponse response = new ApiResponse();
+
+        List<Url> urls = urlDao.getExpiredsUrls(userId, System.currentTimeMillis());
+
+        response.add("urls", urls);
+
+        if (ObjUtil.isNullOrEmpty(urls))
+            response.add("urls", new ArrayList<>());
+
+        response.setOk(true);
+        return response;
+    }
+
 }

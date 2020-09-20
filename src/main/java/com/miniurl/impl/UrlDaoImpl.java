@@ -3,11 +3,13 @@ package com.miniurl.impl;
 import com.miniurl.dao.UrlDao;
 import com.miniurl.entity.url.Url;
 import com.miniurl.entity.url.UrlCreatedInDescByUser;
+import com.miniurl.entity.url.UrlExpiresAtWithCreatedUser;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
 import com.miniurl.model.request.UrlRequest;
 import com.miniurl.redis.KeyCounterService;
 import com.miniurl.repositories.url.UrlCreatedInDescByUserRepository;
+import com.miniurl.repositories.url.UrlExpiresAtWithCreatedUserRepository;
 import com.miniurl.repositories.url.UrlRepository;
 import com.miniurl.utils.EncodeUtil;
 import com.miniurl.utils.ObjUtil;
@@ -35,6 +37,9 @@ public class UrlDaoImpl implements UrlDao {
     @Autowired
     private KeyCounterService keyCounterService;
 
+    @Autowired
+    private UrlExpiresAtWithCreatedUserRepository urlExpiresAtWithCreatedUserRepository;
+
     @Override
     public String create(UrlRequest urlRequest) throws EntityException {
 
@@ -45,7 +50,6 @@ public class UrlDaoImpl implements UrlDao {
         url.setAccessType("PUBLIC");
         url.setCreatedBy(urlRequest.getUserId());
         url.setExpiresAt((20 * (86400) + System.currentTimeMillis())); // default expiry for 20 days;
-
         url = save(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()), url);
 
         if (url == null)
@@ -54,16 +58,14 @@ public class UrlDaoImpl implements UrlDao {
         if (ObjUtil.isBlank(url.getCreatedBy()))
             return url.getId();
 
-        UrlCreatedInDescByUser urlCreatedInDescByUser = save(new UrlCreatedInDescByUser(url.getCreatedBy(), url.getCreatedAt(), url.getId()));
-        if (urlCreatedInDescByUser == null) {
-            delete(url.getId());
-            throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
-        }
-
+        // todo need to write in background queue process
+        save(new UrlCreatedInDescByUser(url.getCreatedBy(), url.getCreatedAt(), url.getId()));
+        save(new UrlExpiresAtWithCreatedUser(url.getCreatedBy(), url.getExpiresAt(), url.getId()));
         return url.getId();
     }
 
 
+    /// todo need to something to expire the the properties
     @CachePut(value = "url", key = "#id")
     @Override
     public Url save(String id, Url url) {
@@ -134,6 +136,32 @@ public class UrlDaoImpl implements UrlDao {
         return getAllByIds(ids);
     }
 
+    @Override
+    public List<Url> getExpiredsUrls(String createdBy, long byTime) {
+
+        Preconditions.checkArgument(ObjUtil.isBlank(createdBy), "Invalid userId to get urls");
+
+        if (byTime <= 0)
+            byTime = System.currentTimeMillis();
+
+        List<UrlExpiresAtWithCreatedUser> urlCreatedInDescByUsers = getByUserIdAndExpiredAt(createdBy, byTime);
+        if(ObjUtil.isNullOrEmpty(urlCreatedInDescByUsers))
+            return new ArrayList<>();
+
+        Set<String> urlIds =  urlCreatedInDescByUsers.stream().map(UrlExpiresAtWithCreatedUser::getUrlId).collect(Collectors.toSet());
+        return getByIds(urlIds);
+
+    }
+
+    private List<UrlExpiresAtWithCreatedUser> getByUserIdAndExpiredAt(String userId, long byTime) {
+        try {
+            return urlExpiresAtWithCreatedUserRepository.findByCreatedByAndExpiresAtLessThan( userId, byTime);
+        }catch (Exception e){
+            log.error("Exception while fetching urlCreatedInDescByUser with userId and expiresAt", e.getMessage(), e);
+            return new ArrayList<>();
+        }
+    }
+
 
     private List<Url> getAllByIds(Set<String> ids){
         try{
@@ -156,7 +184,16 @@ public class UrlDaoImpl implements UrlDao {
         try {
             return urlCreatedInDescByUserRepository.save(urlCreatedInDescByUser);
         } catch (Exception e) {
-             log.error("Exception while creating urlCreatedInDescByUser : " , e.getMessage(), e);
+             log.error("Exception while saving urlCreatedInDescByUser : " , e.getMessage(), e);
+            return null;
+        }
+    }
+
+    private UrlExpiresAtWithCreatedUser save(UrlExpiresAtWithCreatedUser urlExpiresAtWithCreatedUser) {
+        try {
+            return urlExpiresAtWithCreatedUserRepository.save(urlExpiresAtWithCreatedUser);
+        } catch (Exception e) {
+            log.error("Exception while saving UrlExpiresAtWithCreatedUser : " , e.getMessage(), e);
             return null;
         }
     }

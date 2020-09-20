@@ -1,6 +1,7 @@
 package com.miniurl.entity.url;
 
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,16 +16,16 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "url_created_in_desc_by_user")
-public class UrlCreatedInDescByUser implements Serializable {
+@Table(value = "url_expires_at_with_created_user")
+public class UrlExpiresAtWithCreatedUser implements Serializable {
 
-    private static final long serialVersionUID = 3330424151938847842L;
+    private static final long serialVersionUID = 3799027170019750002L;
 
     @PrimaryKeyColumn(value = "created_by", type = PrimaryKeyType.PARTITIONED)
     private String createdBy;
 
-    @PrimaryKeyColumn(value = "created_at", type = PrimaryKeyType.CLUSTERED, ordinal = 0, ordering = Ordering.DESCENDING)
-    private long createdAt;
+    @PrimaryKeyColumn(value = "expires_at", type = PrimaryKeyType.CLUSTERED, ordinal = 0, ordering = Ordering.DESCENDING)
+    private long expiresAt;
 
     @Column(value = "url_Id")
     private String urlId;
