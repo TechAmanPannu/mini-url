@@ -99,13 +99,13 @@ public class UrlDaoImpl implements UrlDao {
         return optional.orElse(null);
     }
 
-    @CacheEvict(value = "url", key = "#url.id")
+    @CacheEvict(value = "url", key = "#id")
     @Override
-    public boolean delete(String urlId) {
+    public boolean delete(String id) {
 
-        Preconditions.checkArgument(ObjUtil.isBlank(urlId), "Invalid urlId to delete url");
+        Preconditions.checkArgument(ObjUtil.isBlank(id), "Invalid urlId to delete url");
         try {
-            urlRepository.deleteById(urlId);
+            urlRepository.deleteById(id);
         } catch (Exception e) {
            log.error("Exception while deleting url by Id:", e.getMessage(), e);
             return false;
