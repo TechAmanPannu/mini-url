@@ -1,5 +1,6 @@
 package com.miniurl.impl;
 
+import com.miniurl.constants.CommonConstants;
 import com.miniurl.dao.UrlDao;
 import com.miniurl.entity.Url;
 import com.miniurl.entity.indexes.url.UrlCreatedInDescByUser;
@@ -47,9 +48,11 @@ public class UrlDaoImpl implements UrlDao {
         Preconditions.checkArgument(urlRequest == null, "Invalid url to save");
         Preconditions.checkArgument(ObjUtil.isBlank(urlRequest.getUrl()), "Invalid url string to create url");
 
+        String createdBy = ObjUtil.isBlank(urlRequest.getUserId()) ? CommonConstants.APP_USER : urlRequest.getUserId();
+
         Url url = new Url(urlRequest.getUrl());
         url.setAccessType(AccessType.PUBLIC.toString());
-        url.setCreatedBy(urlRequest.getUserId());
+        url.setCreatedBy(createdBy);
         url.setExpiresAt((20 * (86400) + System.currentTimeMillis())); // default expiry for 20 days;
         url = save(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()), url);
 
@@ -66,7 +69,7 @@ public class UrlDaoImpl implements UrlDao {
     }
 
 
-    /// todo need to something to expire the the properties
+    /// todo need to something to expire the the properties and need to test
     @CachePut(value = "url", key = "#id")
     @Override
     public Url save(String id, Url url) {
