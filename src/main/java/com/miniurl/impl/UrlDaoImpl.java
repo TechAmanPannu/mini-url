@@ -43,10 +43,10 @@ public class UrlDaoImpl implements UrlDao {
 
         Url url = new Url(urlRequest.getUrl());
         url.setAccessType("PUBLIC");
-        url.setId(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()));
+
         url.setCreatedBy(urlRequest.getUserId());
 
-        url = save(url.getId(), url);
+        url = save(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()), url);
 
         if (url == null)
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");

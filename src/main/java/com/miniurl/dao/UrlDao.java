@@ -17,7 +17,7 @@ public interface UrlDao {
 
     String create(UrlRequest url) throws EntityException;
 
-    boolean delete(String urlId);
+    boolean delete(String id);
 
     List<Url> getByCreatedAtDesc(String userId, long createdAt);
 
