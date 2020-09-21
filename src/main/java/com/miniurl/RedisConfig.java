@@ -62,8 +62,5 @@ public class RedisConfig {
         return template;
     }
 
-    @Bean
-    public RCache rCache(){
-        return new RCache();
-    }
+
 }

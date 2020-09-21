@@ -9,13 +9,13 @@ import com.miniurl.enums.AccessType;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
 import com.miniurl.model.request.UrlRequest;
-import com.miniurl.redis.KeyCounterService;
 import com.miniurl.repositories.url.UrlCreatedInDescByUserRepository;
 import com.miniurl.repositories.url.UrlExpiresAtWithCreatedUserRepository;
 import com.miniurl.repositories.url.UrlRepository;
 import com.miniurl.utils.EncodeUtil;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
+import com.miniurl.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -37,9 +37,6 @@ public class UrlDaoImpl implements UrlDao {
     private UrlCreatedInDescByUserRepository urlCreatedInDescByUserRepository;
 
     @Autowired
-    private KeyCounterService keyCounterService;
-
-    @Autowired
     private UrlExpiresAtWithCreatedUserRepository urlExpiresAtWithCreatedUserRepository;
 
     @Override
@@ -54,7 +51,14 @@ public class UrlDaoImpl implements UrlDao {
         url.setAccessType(AccessType.PUBLIC.toString());
         url.setCreatedBy(createdBy);
         url.setExpiresAt((20 * (86400) + System.currentTimeMillis())); // default expiry for 20 days;
-        url = save(EncodeUtil.Base62.encode(keyCounterService.getNextKeyCount()), url);
+
+        String urlId = null;
+        do{
+             urlId  = EncodeUtil.Base62.encode(UUIDUtil.LongNumber.getRandomNumber());
+
+        }while(get(urlId) != null);
+
+       url =  save(urlId, url);
 
         if (url == null)
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");

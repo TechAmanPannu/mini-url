@@ -2,19 +2,16 @@ package com.miniurl.entity;
 
 
 import com.miniurl.constants.CommonConstants;
-import com.miniurl.entity.BaseEntity;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
-import com.miniurl.utils.ServerUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
-import java.io.Serializable;
+
 import java.util.Set;
 
 @Data

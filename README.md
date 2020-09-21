@@ -24,11 +24,12 @@ use Helm to setup Redis in local as well as production
 
 Install Redis using helm  with Args:
 
+````text 
 helm install mini-url-redis bitnami/redis \--set cluster.slaveCount=3 \
   --set usePassword=false \--set volumePermissions.enabled=true  \--set master.persistence.size=1Gi \ 
   --set slave.persistence.size=1Gi
   
-2. Delete Redis: helm delete mini_url_redis
+2. Delete Redis: helm delete mini-url-redis
 
 3 . Upgrade Redis : helm upgrade <arguements>
 

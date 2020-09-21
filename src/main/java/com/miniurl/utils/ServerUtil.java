@@ -2,9 +2,9 @@ package com.miniurl.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
-public final class ServerUtils {
+public final class ServerUtil {
 
-    private ServerUtils(){}
+    private ServerUtil(){}
 
     public static String getHost(HttpServletRequest request) {
         return removeServletPath(request.getRequestURL().toString(), request.getServletPath());

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class RCache implements RCacher{
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<Object, Object> redisTemplate;
 
     @Override
     public void put(String key, Object value, long expiryInSec) {
@@ -21,7 +21,7 @@ public class RCache implements RCacher{
             return;
 
         key = getKeyWithRCacheNamespace(key);
-        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
+        ValueOperations<Object, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value, expiryInSec, TimeUnit.SECONDS);
     }
 
@@ -38,7 +38,7 @@ public class RCache implements RCacher{
             return;
 
         key = getKeyWithRCacheNamespace(key);
-        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
+        ValueOperations<Object, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value);
     }
 
@@ -49,7 +49,7 @@ public class RCache implements RCacher{
             return null;
 
         key = getKeyWithRCacheNamespace(key);
-        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
+        ValueOperations<Object, Object> ops = redisTemplate.opsForValue();
         return ops.get(key);
     }
 

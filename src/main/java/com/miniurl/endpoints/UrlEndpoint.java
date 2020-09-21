@@ -7,7 +7,7 @@ import com.miniurl.model.request.UrlRequest;
 import com.miniurl.model.response.ApiResponse;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
-import com.miniurl.utils.ServerUtils;
+import com.miniurl.utils.ServerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ public class UrlEndpoint extends BaseEndpoint {
 
         String miniUrl = urlDao.create(urlRequest);
         response.setOk(true);
-        response.add("miniUrl", ServerUtils.getHost(httpRequest)+"/"+miniUrl);
+        response.add("miniUrl", ServerUtil.getHost(httpRequest)+"/"+miniUrl);
 
         return response;
     }
