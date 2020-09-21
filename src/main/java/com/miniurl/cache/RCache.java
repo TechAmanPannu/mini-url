@@ -20,8 +20,15 @@ public class RCache implements RCacher{
         if(ObjUtil.isBlank(key) || value == null)
             return;
 
+        key = getKeyWithRCacheNamespace(key);
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value, expiryInSec, TimeUnit.SECONDS);
+    }
+
+    private String getKeyWithRCacheNamespace(String key) {
+        String namespace = "RCache::";
+        key = namespace + key;
+        return key;
     }
 
     @Override
@@ -30,6 +37,7 @@ public class RCache implements RCacher{
         if(ObjUtil.isBlank(key) || value == null)
             return;
 
+        key = getKeyWithRCacheNamespace(key);
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value);
     }
@@ -40,17 +48,9 @@ public class RCache implements RCacher{
         if(ObjUtil.isBlank(key) )
             return null;
 
+        key = getKeyWithRCacheNamespace(key);
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         return ops.get(key);
     }
 
-    @Override
-    public void remove(String key) {
-
-        if(ObjUtil.isBlank(key) )
-            return;
-
-        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-        ops.set(key, "DEFAULT", 1, TimeUnit.NANOSECONDS);
-    }
 }

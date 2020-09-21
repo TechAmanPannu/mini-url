@@ -11,6 +11,5 @@ public interface RCacher {
 
     Object get(String key);
 
-    void remove(String key);
 
 }

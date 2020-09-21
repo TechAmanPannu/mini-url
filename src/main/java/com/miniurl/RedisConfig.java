@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.miniurl.cache.RCache;
 import io.lettuce.core.ReadFrom;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ import org.springframework.data.redis.serializer.*;
 @Data
 @Slf4j
 @Configuration
-@PropertySource({ "redis-application.properties" })
+@PropertySource({"redis-application.properties"})
 public class RedisConfig {
 
     @Autowired
@@ -45,20 +46,24 @@ public class RedisConfig {
 
     }
 
-        @Bean
-        public RedisTemplate<String, String> redisTemplate() {
-            ObjectMapper om = new ObjectMapper();
-            om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-            om.activateDefaultTyping(BasicPolymorphicTypeValidator.builder().build(), ObjectMapper.DefaultTyping.NON_FINAL);
-            // redis serialize
-            Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-            jackson2JsonRedisSerializer.setObjectMapper(om);
-            StringRedisTemplate template = new StringRedisTemplate(redisConnectionFactory());
-            template.setValueSerializer(jackson2JsonRedisSerializer);
-            template.setHashKeySerializer(jackson2JsonRedisSerializer);
-            template.setHashValueSerializer(jackson2JsonRedisSerializer);
-            template.afterPropertiesSet();
-            return template;
-        }
+    @Bean
+    public RedisTemplate<String, String> redisTemplate() {
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        om.activateDefaultTyping(BasicPolymorphicTypeValidator.builder().build(), ObjectMapper.DefaultTyping.NON_FINAL);
+        // redis serialize
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        jackson2JsonRedisSerializer.setObjectMapper(om);
+        StringRedisTemplate template = new StringRedisTemplate(redisConnectionFactory());
+        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setHashKeySerializer(jackson2JsonRedisSerializer);
+        template.setHashValueSerializer(jackson2JsonRedisSerializer);
+        template.afterPropertiesSet();
+        return template;
+    }
 
+    @Bean
+    public RCache rCache(){
+        return new RCache();
+    }
 }
