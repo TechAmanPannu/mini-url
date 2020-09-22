@@ -48,10 +48,11 @@ public class UrlDaoImpl implements UrlDao {
         String createdBy = ObjUtil.isBlank(urlRequest.getUserId()) ? CommonConstants.APP_USER : urlRequest.getUserId();
 
         Url url = new Url(urlRequest.getUrl());
-        url.setAccessType(AccessType.PUBLIC.toString());
+        url.setAccessType("PUBLIC");
         url.setCreatedBy(createdBy);
         url.setExpiresAt((20 * (86400) + System.currentTimeMillis())); // default expiry for 20 days;
 
+        System.out.println("coming request with name : "+urlRequest.getUserId());
         String urlId = null;
         do{
              urlId  = EncodeUtil.Base62.encode(UUIDUtil.LongNumber.getRandomNumber());

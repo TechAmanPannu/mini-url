@@ -36,3 +36,8 @@ helm install mini-url-redis bitnami/redis \--set cluster.slaveCount=3 \
 #Cassndra Query Limit
 https://www.datastax.com/blog/2015/06/deep-look-cql-where-clause
 
+Downward api kubernetes
+https://github.com/kubernetes/kubernetes/blob/release-1.0/docs/user-guide/downward-api.md
+https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/
+
+

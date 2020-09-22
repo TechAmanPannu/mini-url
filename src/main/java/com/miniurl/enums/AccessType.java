@@ -6,8 +6,4 @@ public enum AccessType {
 
     PRIVATE;
 
-    @Override
-    public String toString() {
-        return this.toString().toLowerCase();
-    }
 }

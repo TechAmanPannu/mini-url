@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RCache implements RCacher{
 
-    @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
 
     @Override

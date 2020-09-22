@@ -2,6 +2,7 @@ package com.miniurl.impl;
 
 
 import com.miniurl.utils.EncodeUtil;
+import com.miniurl.utils.UUIDUtil;
 import jnr.ffi.provider.jffi.FastLongMethodGenerator;
 
 import java.security.NoSuchAlgorithmException;
@@ -16,6 +17,7 @@ class UrlDaoImplTest {
 
     public static void main(String[] arg) throws NoSuchAlgorithmException, NoSuchProviderException {
 
+      //  System.out.println(UUIDUtil.LongNumber.getRandomNumber());
 
 
     }
