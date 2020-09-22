@@ -17,7 +17,7 @@ class UrlDaoImplTest {
 
     public static void main(String[] arg) throws NoSuchAlgorithmException, NoSuchProviderException {
 
-      //  System.out.println(UUIDUtil.LongNumber.getRandomNumber());
+        System.out.println(UUIDUtil.LongNumber.getServerId());
 
 
     }
