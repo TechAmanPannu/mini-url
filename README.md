@@ -40,4 +40,10 @@ Downward api kubernetes
 https://github.com/kubernetes/kubernetes/blob/release-1.0/docs/user-guide/downward-api.md
 https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/
 
+ZOOKEEPER
+https://github.com/bitnami/charts/tree/master/bitnami/zookeeper
+CLI : zkCli.sh
+
+
+
 

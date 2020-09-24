@@ -1,11 +1,10 @@
 package com.miniurl.impl;
 
-import com.miniurl.constants.CommonConstants;
+import com.miniurl.constants.AppConstants;
 import com.miniurl.dao.UrlDao;
 import com.miniurl.entity.Url;
 import com.miniurl.entity.indexes.url.UrlCreatedInDescByUser;
 import com.miniurl.entity.indexes.url.UrlExpiresAtWithCreatedUser;
-import com.miniurl.enums.AccessType;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
 import com.miniurl.model.request.UrlRequest;
@@ -45,7 +44,7 @@ public class UrlDaoImpl implements UrlDao {
         Preconditions.checkArgument(urlRequest == null, "Invalid url to save");
         Preconditions.checkArgument(ObjUtil.isBlank(urlRequest.getUrl()), "Invalid url string to create url");
 
-        String createdBy = ObjUtil.isBlank(urlRequest.getUserId()) ? CommonConstants.APP_USER : urlRequest.getUserId();
+        String createdBy = ObjUtil.isBlank(urlRequest.getUserId()) ? AppConstants.APP_USER : urlRequest.getUserId();
 
         Url url = new Url(urlRequest.getUrl());
         url.setAccessType("PUBLIC");

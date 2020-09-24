@@ -8,12 +8,15 @@ import com.miniurl.model.response.ApiResponse;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
 import com.miniurl.utils.ServerUtil;
+import com.miniurl.zookeeper.LeaderSelectorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/url")
 public class UrlEndpoint extends BaseEndpoint {
@@ -21,12 +24,13 @@ public class UrlEndpoint extends BaseEndpoint {
     @Autowired
     private UrlDao urlDao;
 
+
+
     @PostMapping
     public ApiResponse createUrl(@RequestBody UrlRequest urlRequest) throws EntityException {
 
         ApiResponse response = new ApiResponse();
         Preconditions.checkArgument(urlRequest == null, "Invalid url request");
-
         String miniUrl = urlDao.create(urlRequest);
         response.setOk(true);
         response.add("miniUrl", ServerUtil.getHost(httpRequest)+"/"+miniUrl);

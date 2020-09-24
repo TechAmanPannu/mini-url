@@ -1,7 +1,7 @@
 package com.miniurl.entity;
 
 
-import com.miniurl.constants.CommonConstants;
+import com.miniurl.constants.AppConstants;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class Url extends BaseEntity {
     public String constructMiniUrl() {
         Preconditions.checkArgument(ObjUtil.isBlank(id), "invalid id to construct mini url");
 
-        StringBuilder sb = new StringBuilder(CommonConstants.APP_URL);
+        StringBuilder sb = new StringBuilder(AppConstants.APP_URL);
         sb.append("/");
         sb.append(id);
         return sb.toString();

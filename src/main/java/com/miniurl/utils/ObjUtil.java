@@ -12,6 +12,7 @@ import java.util.*;
 
 public final class ObjUtil {
 
+    private ObjUtil(){}
     private static ObjectMapper jacksonMapper;
 
     static {
