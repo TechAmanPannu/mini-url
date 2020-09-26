@@ -18,8 +18,6 @@ public class Application {
         log.info("Mini Url App is Lauching ...");
 
         log.info("App Mode : "+ AppConstants.APP_MODE);
-        log.info("ServerId : "+ AppConstants.SERVER.getId());
-
 
         SpringApplication application = new SpringApplication(Application.class);
         addInitHooks(application);

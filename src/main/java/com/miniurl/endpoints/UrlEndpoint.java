@@ -1,6 +1,5 @@
 package com.miniurl.endpoints;
 
-import com.miniurl.constants.AppConstants;
 import com.miniurl.dao.UrlDao;
 import com.miniurl.entity.Url;
 import com.miniurl.exception.EntityException;
@@ -9,7 +8,6 @@ import com.miniurl.model.response.ApiResponse;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
 import com.miniurl.utils.ServerUtil;
-import com.miniurl.zookeeper.leader.LeaderSelector;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +33,6 @@ public class UrlEndpoint extends BaseEndpoint {
         String miniUrl = urlDao.create(urlRequest);
         response.setOk(true);
         response.add("miniUrl", ServerUtil.getHost(httpRequest)+"/"+miniUrl);
-
         return response;
     }
 

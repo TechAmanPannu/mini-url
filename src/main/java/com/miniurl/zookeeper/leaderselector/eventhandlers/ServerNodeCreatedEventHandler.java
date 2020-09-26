@@ -1,6 +1,6 @@
-package com.miniurl.zookeeper.leader.eventhandlers;
+package com.miniurl.zookeeper.leaderselector.eventhandlers;
 
-import com.miniurl.zookeeper.leader.LeaderSelector;
+import com.miniurl.zookeeper.leaderselector.LeaderSelector;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.recipes.cache.ChildData;

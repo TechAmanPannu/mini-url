@@ -1,6 +1,5 @@
-package com.miniurl.zookeeper.leader.eventhandlers;
+package com.miniurl.zookeeper.leaderselector.eventhandlers;
 
-import com.miniurl.zookeeper.leader.LeaderSelector;
 import org.springframework.stereotype.Component;
 
 @Component

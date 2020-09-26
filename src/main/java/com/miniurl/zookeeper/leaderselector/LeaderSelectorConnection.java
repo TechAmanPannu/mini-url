@@ -1,10 +1,10 @@
-package com.miniurl.zookeeper.leader;
+package com.miniurl.zookeeper.leaderselector;
 
 import com.miniurl.exception.IllegalArgException;
-import com.miniurl.zookeeper.leader.eventhandlers.LeaderSelectorConnectionEventHandler;
-import com.miniurl.zookeeper.leader.eventhandlers.ServerNodeChangeEventHandler;
-import com.miniurl.zookeeper.leader.eventhandlers.ServerNodeCreatedEventHandler;
-import com.miniurl.zookeeper.leader.eventhandlers.ServerNodeDeletedEventHandler;
+import com.miniurl.zookeeper.leaderselector.eventhandlers.LeaderSelectorConnectionEventHandler;
+import com.miniurl.zookeeper.leaderselector.eventhandlers.ServerNodeChangeEventHandler;
+import com.miniurl.zookeeper.leaderselector.eventhandlers.ServerNodeCreatedEventHandler;
+import com.miniurl.zookeeper.leaderselector.eventhandlers.ServerNodeDeletedEventHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
@@ -17,16 +17,13 @@ public class LeaderSelectorConnection {
 
     public LeaderSelectorConnection(final CuratorFramework client, final LeaderSelector leaderSelector ){
 
-        CuratorCache curatorCache = CuratorCache.build(client, LeaderSelector.PARENT_PATH);
+        CuratorCache curatorCache = CuratorCache.build(client, LeaderSelector.CLUSTER);
         curatorCache
                 .listenable()
-                .addListener(new CuratorCacheListener() {
-                    @Override
-                    public void event(Type type, ChildData oldData, ChildData data) {
-                        log.info("Leader Selector Connection State");
-                        LeaderSelectorConnectionEventHandler eventHandler = getConnectionStateHandler(type, oldData, data, leaderSelector);
-                        eventHandler.process();
-                    }
+                .addListener((type, oldData, data) -> {
+                    log.info("Leader Selector Connection State");
+                    LeaderSelectorConnectionEventHandler eventHandler = getConnectionStateHandler(type, oldData, data, leaderSelector);
+                    eventHandler.process();
                 });
 
         curatorCache.start();

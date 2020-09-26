@@ -20,7 +20,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.*;
 
-@Data
 @Slf4j
 @Configuration
 @PropertySource({"redis-application.properties"})

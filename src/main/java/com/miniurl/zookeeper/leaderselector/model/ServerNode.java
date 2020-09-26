@@ -1,4 +1,4 @@
-package com.miniurl.zookeeper.leader.model;
+package com.miniurl.zookeeper.leaderselector.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.miniurl.utils.ObjUtil;

@@ -15,7 +15,6 @@ import com.miniurl.utils.EncodeUtil;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
 import com.miniurl.utils.UUIDUtil;
-import com.miniurl.zookeeper.leader.LeaderSelector;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

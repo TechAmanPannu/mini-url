@@ -1,15 +1,13 @@
-package com.miniurl.zookeeper.leader.eventhandlers;
+package com.miniurl.zookeeper.leaderselector.eventhandlers;
 
-import com.miniurl.constants.AppConstants;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
-import com.miniurl.zookeeper.leader.LeaderSelector;
-import com.miniurl.zookeeper.leader.model.ServerNode;
+import com.miniurl.zookeeper.leaderselector.LeaderSelector;
+import com.miniurl.zookeeper.leaderselector.model.ServerNode;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -49,9 +47,10 @@ public class BaseLeaderSelectorConnectionEventHandler implements LeaderSelectorC
         if(leadServerNode == null)
             return;
 
-        if(leadServerNode.getId().equals(AppConstants.SERVER.getId())) {
-            log.info("Hey I am Lead server node and my Id is :"+AppConstants.SERVER.getId());
-            AppConstants.SERVER.setLeader(true);
+        ServerNode currentServer = leaderSelector.getCurrentServer();
+        if(leadServerNode.getId().equals(currentServer.getId())) {
+            log.info("Hey I am Lead server node.");
+            currentServer.setLeader(true);
         }
 
     }

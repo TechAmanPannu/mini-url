@@ -45,12 +45,4 @@ public class Url extends BaseEntity {
         this.url = url;
     }
 
-    public String constructMiniUrl() {
-        Preconditions.checkArgument(ObjUtil.isBlank(id), "invalid id to construct mini url");
-
-        StringBuilder sb = new StringBuilder(AppConstants.APP_URL);
-        sb.append("/");
-        sb.append(id);
-        return sb.toString();
-    }
 }
