@@ -15,6 +15,7 @@ import com.miniurl.utils.EncodeUtil;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
 import com.miniurl.utils.UUIDUtil;
+import com.miniurl.zookeeper.leader.LeaderSelector;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -44,6 +45,7 @@ public class UrlDaoImpl implements UrlDao {
         Preconditions.checkArgument(urlRequest == null, "Invalid url to save");
         Preconditions.checkArgument(ObjUtil.isBlank(urlRequest.getUrl()), "Invalid url string to create url");
 
+
         String createdBy = ObjUtil.isBlank(urlRequest.getUserId()) ? AppConstants.APP_USER : urlRequest.getUserId();
 
         Url url = new Url(urlRequest.getUrl());
@@ -51,7 +53,6 @@ public class UrlDaoImpl implements UrlDao {
         url.setCreatedBy(createdBy);
         url.setExpiresAt((20 * (86400) + System.currentTimeMillis())); // default expiry for 20 days;
 
-        System.out.println("coming request with name : "+urlRequest.getUserId());
         String urlId = null;
         do{
              urlId  = EncodeUtil.Base62.encode(UUIDUtil.LongNumber.getRandomNumber());

@@ -44,7 +44,7 @@ dependencies {
     compile ('org.apache.curator:curator-x-async:5.1.0'){
         exclude group: 'org.apache.zookeeper', module: 'zookeeper'
     }
-    compile 'org.apache.curator:curator-recipes:4.0.1'
+    compile 'org.apache.curator:curator-recipes:5.1.0'
 
 
     //test

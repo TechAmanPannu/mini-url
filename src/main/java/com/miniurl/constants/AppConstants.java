@@ -3,6 +3,7 @@ package com.miniurl.constants;
 
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
+import com.miniurl.zookeeper.leader.model.ServerNode;
 
 
 public final class AppConstants {
@@ -13,14 +14,13 @@ public final class AppConstants {
     public final static String APP_URL = "";
     public final static String APP_USER = "MINI_URL_APP_USER";
     public final static AppMode APP_MODE;
-    public final static String SERVER_ID;
-    public final static String SERVER_IP;
+
+    public final static ServerNode SERVER;
 
     static {
 
         APP_MODE = AppMode.getMode();
-        SERVER_ID = getServerId();
-        SERVER_IP = getServerIP();
+        SERVER = getServerFromEnv();
         switch (APP_MODE) {
 
             case PRODUCTION:
@@ -31,16 +31,16 @@ public final class AppConstants {
 
     }
 
-    private static String getServerIP() {
-        final String podIp = System.getenv("POD_IP");
-        Preconditions.checkArgument(ObjUtil.isBlank(podIp), "Invalid podId to start server");
-        return podIp;
-    }
 
-    public static String getServerId() {
+    private static ServerNode getServerFromEnv() {
+
+        final String podIp = System.getenv("POD_IP");
         final String  podId = System.getenv("POD_ID");
+
+        Preconditions.checkArgument(ObjUtil.isBlank(podIp), "Invalid podId to start server");
         Preconditions.checkArgument(ObjUtil.isBlank(podId), "Invalid podId for running server");
-        return podId;
+
+        return new ServerNode(podId, podIp);
     }
 
     enum AppMode {
@@ -73,4 +73,6 @@ public final class AppConstants {
     public static boolean isProduction() {
         return APP_MODE == AppMode.PRODUCTION;
     }
+
+
 }

@@ -1,7 +1,6 @@
 package com.miniurl;
 
 import com.miniurl.constants.AppConstants;
-import com.miniurl.listeners.AppReadyEventListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +18,8 @@ public class Application {
         log.info("Mini Url App is Lauching ...");
 
         log.info("App Mode : "+ AppConstants.APP_MODE);
-        log.info("ServerId : "+ AppConstants.SERVER_ID);
+        log.info("ServerId : "+ AppConstants.SERVER.getId());
+
 
         SpringApplication application = new SpringApplication(Application.class);
         addInitHooks(application);
@@ -27,7 +27,7 @@ public class Application {
     }
 
     public static void addInitHooks(SpringApplication application){
-    application.addListeners(new AppReadyEventListener());
+    //application.addListeners(new AppReadyEventListener());
     }
 
 }
