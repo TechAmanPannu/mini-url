@@ -22,8 +22,8 @@ public class KeyCounterProducer {
 
     public void addCounterRanges() {
 
-        kafkaTemplate.send(new GenericMessage("Please start adding counter msgs ", constructHeaders(START_ADDDING_COUNTER_RANGES_TOPIC)));
-        log.info("sent adding ranges to Kafka Topic - " + START_ADDDING_COUNTER_RANGES_TOPIC);
+        kafkaTemplate.send(new GenericMessage("Please start adding counter msgs ", constructHeaders(ADD_COUNTER_RANGES)));
+        log.info("sent adding ranges to Kafka Topic - " + ADD_COUNTER_RANGES);
     }
 
     public static  Map<String, Object> constructHeaders(String topic){
