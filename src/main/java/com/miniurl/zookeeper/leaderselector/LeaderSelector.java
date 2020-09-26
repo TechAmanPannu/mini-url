@@ -49,8 +49,7 @@ public class LeaderSelector {
         Stat stat = curatorFramework.checkExists().forPath(CLUSTER);
         if (stat != null)
             return true;
-
-        String results = curatorFramework.create().creatingParentsIfNeeded()
+        curatorFramework.create().creatingParentsIfNeeded()
                 .forPath(CLUSTER);
 
         return true;
@@ -63,7 +62,7 @@ public class LeaderSelector {
         Preconditions.checkArgument(ObjUtil.isBlank(currentServer.getId()), "Invalid server id to create server node in zookeeper");
         Preconditions.checkArgument(ObjUtil.isBlank(currentServer.getHost()), "Invalid server host to create server node in zookeeper");
 
-         curatorFramework.create()
+        curatorFramework.create()
                 .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
                 .forPath(SERVER, ObjUtil.getJson(currentServer).getBytes());
         return true;
@@ -104,7 +103,7 @@ public class LeaderSelector {
     private static ServerNode getServerFromEnv() {
 
         final String podIp = System.getenv("POD_IP");
-        final String  podId = System.getenv("POD_ID");
+        final String podId = System.getenv("POD_ID");
 
         Preconditions.checkArgument(ObjUtil.isBlank(podIp), "Invalid podId to start server");
         Preconditions.checkArgument(ObjUtil.isBlank(podId), "Invalid podId for running server");

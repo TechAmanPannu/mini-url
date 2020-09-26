@@ -6,8 +6,10 @@ import com.miniurl.zookeeper.keycounter.model.Counter;
 import com.miniurl.zookeeper.leaderselector.LeaderSelector;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.x.async.AsyncCuratorFramework;
 import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.data.Stat;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,12 +24,12 @@ public class KeyCounter {
 
     private static final long SUB_RANGE_LIMIT = 10000L;
 
-    private AsyncCuratorFramework asyncCuratorFramework;
+    private CuratorFramework curatorFramework;
 
     private Counter counter;
 
-    public KeyCounter(final AsyncCuratorFramework asyncCuratorFramework) {
-        this.asyncCuratorFramework = asyncCuratorFramework;
+    public KeyCounter(final CuratorFramework curatorFramework) {
+        this.curatorFramework = curatorFramework;
         start();
     }
 
@@ -38,13 +40,11 @@ public class KeyCounter {
     @SneakyThrows
     public boolean addCluster() {
 
-        asyncCuratorFramework.checkExists().forPath(RANGE_CLUSTER)
-                .thenAccept(stat -> {
-                    if (stat != null) {
-                        asyncCuratorFramework.create()
-                                .forPath(RANGE_CLUSTER);
-                    }
-                });
+        Stat stat = curatorFramework.checkExists().forPath(RANGE_CLUSTER);
+        if (stat != null)
+            return true;
+        curatorFramework.create().creatingParentsIfNeeded()
+                .forPath(RANGE_CLUSTER);
 
         return true;
     }
@@ -52,21 +52,29 @@ public class KeyCounter {
     @SneakyThrows
     public void addAllRanges() {
 
+        long start = 100000L;
+        long end = 35000000;
+        List<String> ranges = new ArrayList<>();
 
-//        if (!leaderSelector.getCurrentServer().isLeader()) {
-//            log.info("Non Lead servers are not suppossed to create ranges.");
-//            return;
-//        }
-//
-//        List<String> range = new ArrayList<>();
-//
-//        int noOfRanges = 0;
-//        do{
-//            asyncCuratorFramework.create()
-//                    .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
-//                    .forPath(SUB_RANGE, ObjUtil.getJson(server).getBytes());
-//        }while ()
+        int k = 1;
+        for (long i = start ; i <= end ;i = i + 100000L  ){
 
+            if(k == SUB_RANGE_LIMIT){
+
+                curatorFramework.create()
+                        .withMode(CreateMode.PERSISTENT_SEQUENTIAL)
+                        .forPath(SUB_RANGE, ObjUtil.getJsonAsBytes(ranges));
+                ranges = new ArrayList<>();
+                k = 1;
+            }
+
+            long upto = start + 100000L;
+            ranges.add(start + ":" + upto);
+            k++;
+
+        }
 
     }
+
+
 }

@@ -40,10 +40,6 @@ public class ZookeeperConfig {
     }
 
     @Bean
-    public AsyncCuratorFramework asyncCuratorFramework(){
-       return  AsyncCuratorFramework.wrap(zookeeperFrameworkConfig());
-    }
-    @Bean
     public LeaderSelector leaderSelector(){
         LeaderSelector leaderSelector = new LeaderSelector(zookeeperFrameworkConfig());
         new LeaderSelectorConnection(zookeeperFrameworkConfig(), leaderSelector);
@@ -53,7 +49,9 @@ public class ZookeeperConfig {
 
     @Bean
     public KeyCounter keyCounter(){
-        return new KeyCounter(asyncCuratorFramework());
+
+        KeyCounter keyCounter = new KeyCounter(zookeeperFrameworkConfig());
+        return keyCounter;
     }
 
 }
