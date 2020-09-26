@@ -22,7 +22,7 @@ public class KeyCounter {
 
     static final String SUB_RANGE = RANGE_CLUSTER + "/range";
 
-    private static final long SUB_RANGE_LIMIT = 50L;
+    private static final long SUB_RANGE_LIMIT = 1000L;
 
     private CuratorFramework curatorFramework;
 
@@ -53,17 +53,21 @@ public class KeyCounter {
     public void addAllRanges() {
 
         long start = 100000L;
-        long end = 35000000;
+        long end = 3500000000000L;
         List<String> ranges = new ArrayList<>();
         int k = 1;
+        int rangeNo = 1;
         for (long i = start ; i <= end ;i = i + 100000L  ){
 
             if(k == SUB_RANGE_LIMIT){
+
+                log.info("creating sub range : "+rangeNo);
                 curatorFramework.create()
                         .withMode(CreateMode.PERSISTENT_SEQUENTIAL)
                         .forPath(SUB_RANGE, ObjUtil.getJsonAsBytes(ranges));
                 ranges = new ArrayList<>();
                 k = 1;
+                rangeNo ++;
             }
             long upto = i + 100000L;
             ranges.add(i + ":" + upto);
