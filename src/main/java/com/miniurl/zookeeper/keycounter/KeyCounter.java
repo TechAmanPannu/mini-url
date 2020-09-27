@@ -124,7 +124,7 @@ public class KeyCounter {
 
     }
 
-    public long getCountAndIncr() {
+    public synchronized long getCountAndIncr() {
 
         log.info("time of request :"+System.currentTimeMillis());
         if (this.counter == null)
