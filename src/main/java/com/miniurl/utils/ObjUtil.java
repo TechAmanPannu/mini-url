@@ -110,6 +110,17 @@ public final class ObjUtil {
         }
     }
 
+    public static  List<String> getStringListFromJson(String json){
+
+        try {
+            return jacksonMapper.readValue(json,
+                    new TypeReference<ArrayList<String>>() {
+                    });
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     public static <T> T safeConvertJson(String json, Class<T> clazz) {
         try {
             return jacksonMapper.readValue(json, clazz);

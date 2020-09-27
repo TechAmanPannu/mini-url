@@ -1,17 +1,16 @@
 package com.miniurl.zookeeper.keycounter;
 
-import com.miniurl.KafkaConfig;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.zookeeper.keycounter.model.Counter;
-import com.miniurl.zookeeper.leaderselector.LeaderSelector;
+import com.miniurl.zookeeper.keycounter.model.Range;
+import com.miniurl.zookeeper.keycounter.model.SubRange;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.x.async.AsyncCuratorFramework;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
-import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +21,22 @@ public class KeyCounter {
 
     static final String SUB_RANGE = RANGE_CLUSTER + "/range";
 
-    private static final long SUB_RANGE_LIMIT = 1000L;
+    static final String SUB_RANGE_BY_NAME = RANGE_CLUSTER + "/%s";
 
+    // ============================================
+    // Total subRanges = (END_AT / RANGE_DIFFERENCE) i.e 3500
+    // Total ranges = (END_AT / (SUB_RANG_LIMIT * RANGE_DIFFERENCE)) i.e 70
+    // Sub ranges under ranges = SUB_RANGE_LIMIT
+
+    private static final long START_FROM = 100000L;
+
+    private static final long END_AT = 350000000L;
+
+    private static final long SUB_RANGE_LIMIT = 50L;
+
+    private static final long RANGE_DIFFERENCE = 100000L;
+
+    // ===================================================
     private CuratorFramework curatorFramework;
 
     private Counter counter;
@@ -52,28 +65,142 @@ public class KeyCounter {
     @SneakyThrows
     public void addAllRanges() {
 
-        long start = 100000L;
-        long end = 3500000000000L;
-        List<String> ranges = new ArrayList<>();
-        int k = 1;
-        int rangeNo = 1;
-        for (long i = start ; i <= end ;i = i + 100000L  ){
+        List<SubRange> subRanges = new ArrayList<>();
+        int subRangeCounter = 1;
+        for (long startRange = START_FROM; startRange <= END_AT; startRange = startRange + RANGE_DIFFERENCE) {
 
-            if(k == SUB_RANGE_LIMIT){
-
-                log.info("creating sub range : "+rangeNo);
+            if (subRangeCounter == SUB_RANGE_LIMIT) {
                 curatorFramework.create()
                         .withMode(CreateMode.PERSISTENT_SEQUENTIAL)
-                        .forPath(SUB_RANGE, ObjUtil.getJsonAsBytes(ranges));
-                ranges = new ArrayList<>();
-                k = 1;
-                rangeNo ++;
+                        .forPath(SUB_RANGE, ObjUtil.getJsonAsBytes(subRanges));
+                subRanges = new ArrayList<>();
+                subRangeCounter = 1;
             }
-            long upto = i + 100000L;
-            ranges.add(i + ":" + upto);
-            k++;
+            long endRange = startRange + RANGE_DIFFERENCE;
+            subRanges.add(new SubRange(startRange, endRange));
+            subRangeCounter++;
+        }
+    }
+
+    @SneakyThrows
+    public List<String> getAllRanges() {
+        return curatorFramework.getChildren()
+                .forPath(RANGE_CLUSTER);
+    }
+
+
+    public List<SubRange> getSubRanges(String rangeName) {
+
+        try {
+            return SubRange.asList(new String(curatorFramework.getData()
+                    .forPath(String.format(SUB_RANGE_BY_NAME, rangeName)), StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            log.error("Exception while getting sub ranges ", e.getMessage(), e);
+            return new ArrayList<>();
+        }
+    }
+
+
+    public void updateRange(String rangeName, List<SubRange> subRanges) {
+
+        if (ObjUtil.isNullOrEmpty(subRanges))
+            deleteRange(rangeName);
+
+        try {
+            curatorFramework.setData()
+                    .forPath(String.format(SUB_RANGE_BY_NAME, rangeName), ObjUtil.getJsonAsBytes(subRanges));
+        } catch (Exception e) {
+            log.error("Exception while updating range ", e.getMessage(), e);
+        }
+    }
+
+    public void deleteRange(String rangeName) {
+        try {
+            curatorFramework.delete()
+                    .forPath(String.format(SUB_RANGE_BY_NAME, rangeName));
+        } catch (Exception e) {
+            log.error("Exception while deleting range ", e.getMessage(), e);
         }
 
+    }
+
+    public long getCountAndIncr() {
+
+        log.info("time of request :"+System.currentTimeMillis());
+        if (this.counter == null)
+            return createNewCounter();
+
+        if (isCounterEnd())
+            return updateCounter();
+
+        long count = this.counter.getCount();
+            counter.setCount(counter.getCount() + 1);
+
+            log.info("count "+count);
+            return count;
+
+    }
+
+    private boolean isCounterEnd() {
+        return counter != null && counter.getCount() > counter.getSubRange().getEnd();
+    }
+
+
+    private long updateCounter() {
+
+        String rangeName = counter.getRangeName();
+        List<SubRange> subRanges = getSubRanges(rangeName);
+
+        if (ObjUtil.isNullOrEmpty(subRanges)) {
+            Range range = getValidRange();
+            subRanges = range.getSubRanges();
+            rangeName = range.getRangeName();
+        }
+
+        setNewRange(counter, subRanges.get(0), rangeName);
+
+        subRanges.remove(0);
+        updateRange(rangeName, subRanges);
+        return getCountAndIncr();
+    }
+
+    private long createNewCounter() {
+
+        this.counter = new Counter();
+        Range range = getValidRange();
+        String rangeName = range.getRangeName();
+        List<SubRange> subRanges = range.getSubRanges();
+
+        SubRange subRange = subRanges.get(0);
+        setNewRange(counter, subRange, rangeName);
+
+        subRanges.remove(0);
+        updateRange(rangeName, subRanges);
+
+        return getCountAndIncr();
+    }
+
+    private Range getValidRange() {
+
+        Range range = new Range();
+
+        List<String> ranges = getAllRanges();
+        for (String rangeName : ranges) {
+
+            List<SubRange> subRanges = getSubRanges(rangeName);
+            if (ObjUtil.isNullOrEmpty(subRanges))
+                continue;
+
+            range.setSubRanges(subRanges);
+            range.setRangeName(rangeName);
+        }
+        return range;
+    }
+
+    private void setNewRange(Counter counter, SubRange subRange, String rangeName) {
+        counter.setSubRange(subRange);
+        counter.setCount(subRange.getStart());
+        counter.setRangeName(rangeName);
     }
 
 }

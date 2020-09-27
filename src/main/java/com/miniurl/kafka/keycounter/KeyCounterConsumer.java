@@ -19,5 +19,11 @@ public class KeyCounterConsumer {
         log.info("payload : "+payload);
 
         keyCounter.addAllRanges();
+
+        log.info("Ranges created Successully, please verify connecting to zookeeper client using ... \n" +
+                "(1. kubectl exec -it mini-url-zookeeper-0 -- zkCli.sh) \n" +
+                "2. ls /mini_url/key_ranges : To get all ranges \n" +
+                "3. get /mini_url/key_ranges/{range-name}: To get sub ranges in it, for instance get /mini_url/key_ranges/range0000000070");
+
     }
 }

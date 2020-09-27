@@ -1,6 +1,5 @@
 package com.miniurl.zookeeper.leaderselector;
 
-import com.miniurl.constants.AppConstants;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
 import com.miniurl.zookeeper.leaderselector.model.ServerNode;
@@ -24,7 +23,7 @@ public class LeaderSelector {
 
     static final String SERVER = CLUSTER + "/server";
 
-    public static final String GET_SERVER = CLUSTER + "/%s";
+    public static final String SERVER_BY_NAME = CLUSTER + "/%s";
 
     private CuratorFramework curatorFramework;
 
@@ -97,7 +96,7 @@ public class LeaderSelector {
     public ServerNode getServerNode(String name) {
 
         return ObjUtil.safeConvertJson(new String(curatorFramework.getData()
-                .forPath(String.format(GET_SERVER, name)), StandardCharsets.UTF_8), ServerNode.class);
+                .forPath(String.format(SERVER_BY_NAME, name)), StandardCharsets.UTF_8), ServerNode.class);
     }
 
     private static ServerNode getServerFromEnv() {

@@ -14,7 +14,7 @@ import com.miniurl.repositories.url.UrlRepository;
 import com.miniurl.utils.EncodeUtil;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
-import com.miniurl.utils.UUIDUtil;
+import com.miniurl.zookeeper.keycounter.KeyCounter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,6 +38,9 @@ public class UrlDaoImpl implements UrlDao {
     @Autowired
     private UrlExpiresAtWithCreatedUserRepository urlExpiresAtWithCreatedUserRepository;
 
+    @Autowired
+    private KeyCounter keyCounter;
+
     @Override
     public String create(UrlRequest urlRequest) throws EntityException {
 
@@ -51,14 +54,9 @@ public class UrlDaoImpl implements UrlDao {
         url.setAccessType("PUBLIC");
         url.setCreatedBy(createdBy);
         url.setExpiresAt((20 * (86400) + System.currentTimeMillis())); // default expiry for 20 days;
+        url.setId(EncodeUtil.Base62.encode(keyCounter.getCountAndIncr()));
 
-        String urlId = null;
-        do{
-             urlId  = EncodeUtil.Base62.encode(UUIDUtil.LongNumber.getRandomNumber());
-
-        }while(get(urlId) != null);
-
-       url =  save(urlId, url);
+        url = save(url.getId(), url);
 
         if (url == null)
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
@@ -83,14 +81,14 @@ public class UrlDaoImpl implements UrlDao {
 
         url.setId(id);
         long time = System.currentTimeMillis();
-        if(url.getCreatedAt() <= 0)
+        if (url.getCreatedAt() <= 0)
             url.setCreatedAt(time);
         url.setModifiedAt(time);
 
         try {
             return urlRepository.save(url);
         } catch (Exception e) {
-            log.error("Exception while saving url :" , e.getMessage(), e);
+            log.error("Exception while saving url :", e.getMessage(), e);
             return null;
         }
     }
@@ -104,7 +102,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
             optional = urlRepository.findById(id);
         } catch (Exception e) {
-           log.error("Exception while fetching url :" ,  e.getMessage(), e);
+            log.error("Exception while fetching url :", e.getMessage(), e);
         }
         return optional.orElse(null);
     }
@@ -117,7 +115,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
             urlRepository.deleteById(id);
         } catch (Exception e) {
-           log.error("Exception while deleting url by Id:", e.getMessage(), e);
+            log.error("Exception while deleting url by Id:", e.getMessage(), e);
             return false;
         }
         return true;
@@ -132,10 +130,10 @@ public class UrlDaoImpl implements UrlDao {
             createdAt = System.currentTimeMillis();
 
         List<UrlCreatedInDescByUser> urlCreatedInDescByUsers = getByUserIdAndCreatedAt(createdBy, createdAt);
-        if(ObjUtil.isNullOrEmpty(urlCreatedInDescByUsers))
+        if (ObjUtil.isNullOrEmpty(urlCreatedInDescByUsers))
             return new ArrayList<>();
 
-        Set<String> urlIds =  urlCreatedInDescByUsers.stream().map(UrlCreatedInDescByUser::getUrlId).collect(Collectors.toSet());
+        Set<String> urlIds = urlCreatedInDescByUsers.stream().map(UrlCreatedInDescByUser::getUrlId).collect(Collectors.toSet());
         return getByIds(urlIds);
     }
 
@@ -153,36 +151,37 @@ public class UrlDaoImpl implements UrlDao {
             byTime = System.currentTimeMillis();
 
         List<UrlExpiresAtWithCreatedUser> urlCreatedInDescByUsers = getByUserIdAndExpiredAt(createdBy, byTime);
-        if(ObjUtil.isNullOrEmpty(urlCreatedInDescByUsers))
+        if (ObjUtil.isNullOrEmpty(urlCreatedInDescByUsers))
             return new ArrayList<>();
 
-        Set<String> urlIds =  urlCreatedInDescByUsers.stream().map(UrlExpiresAtWithCreatedUser::getUrlId).collect(Collectors.toSet());
+        Set<String> urlIds = urlCreatedInDescByUsers.stream().map(UrlExpiresAtWithCreatedUser::getUrlId).collect(Collectors.toSet());
         return getByIds(urlIds);
 
     }
 
     private List<UrlExpiresAtWithCreatedUser> getByUserIdAndExpiredAt(String userId, long byTime) {
         try {
-            return urlExpiresAtWithCreatedUserRepository.findByCreatedByAndExpiresAtLessThan( userId, byTime);
-        }catch (Exception e){
+            return urlExpiresAtWithCreatedUserRepository.findByCreatedByAndExpiresAtLessThan(userId, byTime);
+        } catch (Exception e) {
             log.error("Exception while fetching urlCreatedInDescByUser with userId and expiresAt", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
 
 
-    private List<Url> getAllByIds(Set<String> ids){
-        try{
+    private List<Url> getAllByIds(Set<String> ids) {
+        try {
             return urlRepository.findAllById(ids);
-        }catch (Exception e){
-           log.error("Exception while fetching all urls by ids :", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("Exception while fetching all urls by ids :", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
+
     private List<UrlCreatedInDescByUser> getByUserIdAndCreatedAt(String userId, long createdAt) {
         try {
-           return urlCreatedInDescByUserRepository.findByCreatedByAndCreatedAtLessThan(userId, createdAt);
-        }catch (Exception e){
+            return urlCreatedInDescByUserRepository.findByCreatedByAndCreatedAtLessThan(userId, createdAt);
+        } catch (Exception e) {
             log.error("Exception while fetching urlCreatedInDescByUser with userId and createdAt", e.getMessage(), e);
             return new ArrayList<>();
         }
@@ -192,7 +191,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
             return urlCreatedInDescByUserRepository.save(urlCreatedInDescByUser);
         } catch (Exception e) {
-             log.error("Exception while saving urlCreatedInDescByUser : " , e.getMessage(), e);
+            log.error("Exception while saving urlCreatedInDescByUser : ", e.getMessage(), e);
             return null;
         }
     }
@@ -201,7 +200,7 @@ public class UrlDaoImpl implements UrlDao {
         try {
             return urlExpiresAtWithCreatedUserRepository.save(urlExpiresAtWithCreatedUser);
         } catch (Exception e) {
-            log.error("Exception while saving UrlExpiresAtWithCreatedUser : " , e.getMessage(), e);
+            log.error("Exception while saving UrlExpiresAtWithCreatedUser : ", e.getMessage(), e);
             return null;
         }
     }

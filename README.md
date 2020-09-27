@@ -25,7 +25,7 @@ use Helm to setup Redis in local as well as production
 Install Redis using helm  with Args:
 
 ````text 
-helm install mini-url-redis bitnami/redis \--set cluster.slaveCount=1 \
+helm install mini-url-redis bitnami/redis \--set cluster.slaveCount=2 \
   --set usePassword=false \--set volumePermissions.enabled=true  \--set master.persistence.size=1Gi \ 
   --set slave.persistence.size=1Gi
   
@@ -47,6 +47,7 @@ helm install mini-url-zookeeper bitnami/zookeeper \--set persistence.dataLogDir.
 
 CLI : zkCli.sh
 
-Kafka
+KAFKA
 https://bitnami.com/stack/kafka/helm
+helm install mini-url-kafka bitnami/kafka
 
