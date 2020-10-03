@@ -22,17 +22,17 @@ This project I started to improve my software development skills using different
     - [Zookeeper](https://github.com/TechAmanPannu/mini-url#Zookeeper)
     - [Docker](https://github.com/TechAmanPannu/mini-url#Docker)
     - [Kubernetes](https://github.com/TechAmanPannu/mini-url#Kubernetes)
-    - [Google Cloud](https://github.com/TechAmanPannu/mini-url#GoogleCloud)
-    - [Travis CI](https://github.com/TechAmanPannu/mini-url#TravisCI)
+    - [GoogleCloud](https://github.com/TechAmanPannu/mini-url#GoogleCloud)
+    - [TravisCI](https://github.com/TechAmanPannu/mini-url#TravisCI)
     
-- [Basic Setup]()
-- [App Architecture]()
+- [Basic -Setup](https://github.com/TechAmanPannu/mini-url#Basic-Setup)
+- [App-Architecture]()
 - [Database Architecture]()
 - [Things to Consider]()
 - [Estimations]()
 - [Request]()
 - [Response]()
-- [Java sdk]()
+- [Java-sdk]()
 
 
 
@@ -56,7 +56,14 @@ This project I started to improve my software development skills using different
   ## GoogleCloud
   ## TravisCI
   
-  ##
+  ## Basic-Setup
+  ## App Architecture
+  ## Database Architecture
+  ## Things to Consider
+  ## Estimations
+  ## Request
+  ## Response
+  ## Java-sdk
 
 
 
