@@ -12,19 +12,20 @@ https://miniurl.com/ljhni9
 
 This is the project I started to improve my software development skills using different technologies. Further we will understand why and which stack I have used with proper usecases. Here is the list of stack. 
 
-  1. [Java]()
-  2. [SpringBoot]()
-  3. [Cassandra]()
-  4. [Redis]()
-  5. [Kafka]()
-  6. [Zookeeper]()
-  7. [Docker]()
-  8. [Kubernetes]()
+1. [Stack]()
+    a. [Java]()
+    b. [SpringBoot]()
+    c. [Cassandra]()
+    d. [Redis]()
+    e. [Kafka]()
+    f. [Zookeeper]()
+    g. [Docker]()
+    h. [Kubernetes]()
 
-[Basic Setup]()
-[DB Architecture]()
-[Request]()
-[Response]()
+2. [Basic Setup]()
+3. [DB Architecture]()
+4. [Request]()
+5. [Response]()
 
   
 
