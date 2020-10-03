@@ -14,7 +14,8 @@ This is the project I started to improve my software development skills using di
 
 - [Stack]()
 
-    - [Java & SpringBoot](https://github.com/TechAmanPannu/mini-url#Java & Springboot)
+    - [Java](https://github.com/TechAmanPannu/mini-url#Java)
+    - [Springboot]()
     - [Cassandra]()
     - [Redis]()
     - [Kafka]()
@@ -33,7 +34,8 @@ This is the project I started to improve my software development skills using di
 - [Java sdk]
 
   
-  # Java & Springboot
+  # Java
+  # Springboot
   # Cassandra
   # Redis
   # Kafka
