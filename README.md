@@ -22,6 +22,8 @@ This is the project I started to improve my software development skills using di
     - [Zookeeper]()
     - [Docker]()
     - [Kubernetes]()
+    - [Google Cloud]()
+    
 
 - [Basic Setup]()
 - [DB Architecture]()
