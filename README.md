@@ -23,12 +23,13 @@ This is the project I started to improve my software development skills using di
     - [Docker]()
     - [Kubernetes]()
     - [Google Cloud]()
+    - [travis CI]
     
 - [Basic Setup]()
 - [Architecture]()
 - [Database Architecture]()
 - [Things to Consider]()
-- [Estimation]
+- [Estimations]()
 - [Request]()
 - [Response]()
 - [Java sdk]
@@ -43,6 +44,7 @@ This is the project I started to improve my software development skills using di
   # Docker
   # Kubernetes
   # Google Cloud
+  # Travis CI
 
 
 
