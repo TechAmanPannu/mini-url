@@ -19,60 +19,6 @@ Please refer to this [Doc](https://github.com/TechAmanPannu/mini-url/wiki) to un
 ## Java SDK Download
 Please download [java sdk]() to generate short urls in backend servers.
 
-This project I started to improve my software development skills using different technologies. Further we will understand why and which stack I have used with proper usecases. Here is the list of stack. 
-
-- [Stack]()
-
-    - [Java](https://github.com/TechAmanPannu/mini-url#Java)
-    - [Springboot](https://github.com/TechAmanPannu/mini-url#Springboot)
-    - [Cassandra](https://github.com/TechAmanPannu/mini-url#Cassandra)
-    - [Redis](https://github.com/TechAmanPannu/mini-url#Redis)
-    - [Kafka](https://github.com/TechAmanPannu/mini-url#Kafka)
-    - [Zookeeper](https://github.com/TechAmanPannu/mini-url#Zookeeper)
-    - [Docker](https://github.com/TechAmanPannu/mini-url#Docker)
-    - [Kubernetes](https://github.com/TechAmanPannu/mini-url#Kubernetes)
-    - [GoogleCloud](https://github.com/TechAmanPannu/mini-url#GoogleCloud)
-    - [TravisCI](https://github.com/TechAmanPannu/mini-url#TravisCI)
-    
-- [Basic -Setup](https://github.com/TechAmanPannu/mini-url#Basic-Setup)
-- [App-Architecture]()
-- [Database Architecture]()
-- [Things to Consider]()
-- [Estimations]()
-- [Request]()
-- [Response]()
-- [Java-sdk]()
-
-
-
-
-
-
-
-
-
-
-
-  
-  ## Java
-  ## Springboot
-  ## Cassandra
-  ## Redis
-  ## Kafka
-  ## Zookeeper
-  ## Docker
-  ## Kubernetes
-  ## GoogleCloud
-  ## TravisCI
-  
-  ## Basic-Setup
-  ## App Architecture
-  ## Database Architecture
-  ## Things to Consider
-  ## Estimations
-  ## Request
-  ## Response
-  ## Java-sdk
 
 
 
