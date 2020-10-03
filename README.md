@@ -1,53 +1,33 @@
 # Mini Url
 
-Basic setup Minikube
-1. Install Minikube
-3. Run minikube start --vm=true --memory=6GB
+## Why?
 
-How to Start Locally:
+URL shortening is used to create shorter aliases for long URLs. We call these shortened aliases “short links.” Users are redirected to the original URL when they hit these short links. Short links save a lot of space when displayed, printed, messaged, or tweeted. Additionally, users are less likely to mistype shorter URLs.
 
-Run Following Commands
+For eg: https://github.com/datastax/labs/blob/master/spring-boot-starter/20190903/demo/src/main/java/com/datastax/oss/spring/demo/mapper/InventoryMapper.java
 
-1. Build project  jar
-2. eval $(minikube docker-env) : Switch to minikube docker environment.
-3. docker build -t <docker-user-name>/<image-name>:<tag> . 
-4. kubectl apply -f k8s to run all containers or k8s/server-deployment.yaml to run specific configuration. 
+Short Url:
+https://miniurl.com/ljhni9
 
-Delete k8s pods
-1. kubectl delete all --all : Temporary
-2. kubectl delete all --all --grace-period=0 --force : Permanently
 
-## Helm Makes things Easy
-use Helm to setup Redis in local as well as production
+This is the project I started to improve my software development skills using different technologies. Further we will understand why and which stack I have used with proper usecases. Here is the list of stack. 
 
-1. Add redis for local: helm install mini_url_redis bitnami/redis
+  1. [Java]()
+  2. [SpringBoot]()
+  3. [Cassandra]()
+  4. [Redis]()
+  5. [Kafka]()
+  6. [Zookeeper]()
+  7. [Docker]()
+  8. [Kubernetes]()
 
-Install Redis using helm  with Args:
+[Basic Setup]()
+[DB Architecture]()
+[Request]()
+[Response]()
 
-````text 
-helm install mini-url-redis bitnami/redis \--set cluster.slaveCount=2 \
-  --set usePassword=false \--set volumePermissions.enabled=true  \--set master.persistence.size=1Gi \ 
-  --set slave.persistence.size=1Gi
   
-2. Delete Redis: helm delete mini-url-redis
 
-3 . Upgrade Redis : helm upgrade <arguements>
 
-#Cassndra Query Limit
-https://www.datastax.com/blog/2015/06/deep-look-cql-where-clause
 
-Downward api kubernetes
-https://github.com/kubernetes/kubernetes/blob/release-1.0/docs/user-guide/downward-api.md
-https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/
-
-ZOOKEEPER
-https://github.com/bitnami/charts/tree/master/bitnami/zookeeper
-
-helm install mini-url-zookeeper bitnami/zookeeper \--set persistence.dataLogDir.size=1Gi \--set persistence.size=1Gi
-
-CLI : zkCli.sh
-
-KAFKA
-https://bitnami.com/stack/kafka/helm
-helm install mini-url-kafka bitnami/kafka
 
