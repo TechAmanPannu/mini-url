@@ -14,7 +14,7 @@ https://miniurl.com/ljhni9
 It is highly scalable application specially build to generate short urls.
 
 ## Documentation
-Please refer to this [Doc](https://github.com/TechAmanPannu/mini-url/wiki) to understand about mini-url.
+Please refer to this [doc](https://github.com/TechAmanPannu/mini-url/wiki) to understand about mini-url.
 
 ## Java SDK Download
 Please download [java sdk]() to generate short urls in backend servers.
