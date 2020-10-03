@@ -26,7 +26,7 @@ This is the project I started to improve my software development skills using di
     - [travis CI]()
     
 - [Basic Setup]()
-- [Architecture]()
+- [App Architecture]()
 - [Database Architecture]()
 - [Things to Consider]()
 - [Estimations]()
@@ -34,17 +34,29 @@ This is the project I started to improve my software development skills using di
 - [Response]()
 - [Java sdk]()
 
+
+
+
+
+
+
+
+
+
+
   
-  # Java
-  # Springboot
-  # Cassandra
-  # Redis
-  # Kafka
-  # Zookeeper
-  # Docker
-  # Kubernetes
-  # Google Cloud
-  # Travis CI
+  ## Java
+  ## Springboot
+  ## Cassandra
+  ## Redis
+  ## Kafka
+  ## Zookeeper
+  ## Docker
+  ## Kubernetes
+  ## Google Cloud
+  ## Travis CI
+  
+  ##
 
 
 
