@@ -24,9 +24,9 @@ This is the project I started to improve my software development skills using di
     - [Kubernetes]()
     - [Google Cloud]()
     
-
 - [Basic Setup]()
-- [DB Architecture]()
+- [Architecture]()
+- [Database Architecture]()
 - [Request]()
 - [Response]()
 
