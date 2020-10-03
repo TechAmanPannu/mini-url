@@ -10,7 +10,7 @@ Short Url:
 https://miniurl.com/ljhni9
 
 
-This is the project I started to improve my software development skills using different technologies. Further we will understand why and which stack I have used with proper usecases. Here is the list of stack. 
+This project I started to improve my software development skills using different technologies. Further we will understand why and which stack I have used with proper usecases. Here is the list of stack. 
 
 - [Stack]()
 
