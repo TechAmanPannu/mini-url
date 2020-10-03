@@ -14,7 +14,7 @@ This is the project I started to improve my software development skills using di
 
 - [Stack]()
 
-    - [Java]()
+    - [Java](https://github.com/TechAmanPannu/mini-url/docs/Java.md)
     - [SpringBoot]()
     - [Cassandra]()
     - [Redis]()
