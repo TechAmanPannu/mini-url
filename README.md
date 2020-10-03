@@ -22,8 +22,8 @@ This project I started to improve my software development skills using different
     - [Zookeeper](https://github.com/TechAmanPannu/mini-url#Zookeeper)
     - [Docker](https://github.com/TechAmanPannu/mini-url#Docker)
     - [Kubernetes](https://github.com/TechAmanPannu/mini-url#Kubernetes)
-    - [Google Cloud](https://github.com/TechAmanPannu/mini-url#Google Cloud)
-    - [Travis CI](https://github.com/TechAmanPannu/mini-url#Travis CI)
+    - [Google Cloud](https://github.com/TechAmanPannu/mini-url#Google%20Cloud)
+    - [Travis CI](https://github.com/TechAmanPannu/mini-url#Travis%20CI)
     
 - [Basic Setup]()
 - [App Architecture]()
