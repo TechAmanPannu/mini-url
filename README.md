@@ -23,7 +23,7 @@ This is the project I started to improve my software development skills using di
     - [Docker]()
     - [Kubernetes]()
     - [Google Cloud]()
-    - [travis CI]()
+    - [Travis CI]()
     
 - [Basic Setup]()
 - [App Architecture]()
