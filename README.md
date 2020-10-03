@@ -14,8 +14,7 @@ This is the project I started to improve my software development skills using di
 
 - [Stack]()
 
-    - [Java](https://github.com/TechAmanPannu/mini-url/blob/master/docs/Java.md)
-    - [SpringBoot]()
+    - [Java & SpringBoot](https://github.com/TechAmanPannu/mini-url#Java & Springboot)
     - [Cassandra]()
     - [Redis]()
     - [Kafka]()
@@ -27,11 +26,21 @@ This is the project I started to improve my software development skills using di
 - [Basic Setup]()
 - [Architecture]()
 - [Database Architecture]()
+- [Things to Consider]()
+- [Estimation]
 - [Request]()
 - [Response]()
+- [Java sdk]
 
   
-  # Java
+  # Java & Springboot
+  # Cassandra
+  # Redis
+  # Kafka
+  # Zookeeper
+  # Docker
+  # Kubernetes
+  # Google Cloud
 
 
 
