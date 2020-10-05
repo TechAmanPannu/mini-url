@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -30,9 +31,24 @@ public class UrlEndpoint extends BaseEndpoint {
         ApiResponse response = new ApiResponse();
 
         Preconditions.checkArgument(urlRequest == null, "Invalid url request");
-        String miniUrl = urlDao.create(urlRequest);
+        Url url = urlDao.create(urlRequest);
+
         response.setOk(true);
-        response.add("miniUrl", ServerUtil.getHost(httpRequest)+"/"+miniUrl);
+        response.add("url", url);
+        return response;
+    }
+
+
+    @PostMapping(value = "/bulk")
+    public ApiResponse createUrlInBulk(@RequestBody UrlRequest urlRequest) throws EntityException {
+
+        ApiResponse response = new ApiResponse();
+
+        Preconditions.checkArgument(urlRequest == null, "Invalid url request");
+        List<Url> urls = urlDao.createBulk(urlRequest);
+
+        response.setOk(true);
+        response.add("urls", urls);
         return response;
     }
 

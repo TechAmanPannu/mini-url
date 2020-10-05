@@ -127,7 +127,7 @@ public class KeyCounter {
 
     public synchronized long getCountAndIncr() {
 
-        log.info("time of request :"+System.currentTimeMillis());
+        log.info("time of request :" + System.currentTimeMillis());
         if (this.counter == null)
             return createNewCounter();
 
@@ -135,10 +135,10 @@ public class KeyCounter {
             return updateCounter();
 
         long count = this.counter.getCount();
-            counter.setCount(counter.getCount() + 1);
+        counter.setCount(counter.getCount() + 1);
 
-            log.info("count "+count);
-            return count;
+        log.info("count " + count);
+        return count;
 
     }
 
@@ -159,8 +159,8 @@ public class KeyCounter {
             rangeName = range.getRangeName();
         }
 
-        setNewRange(counter, subRanges.get(0), rangeName);
-
+        SubRange subRange = subRanges.get(0);
+        counter = new Counter(subRange.getStart(), subRange, rangeName);
         subRanges.remove(0);
         updateRange(rangeName, subRanges);
         return getCountAndIncr();
@@ -168,14 +168,13 @@ public class KeyCounter {
 
     private long createNewCounter() {
 
-        this.counter = new Counter();
         Range range = getValidRange();
+
         String rangeName = range.getRangeName();
         List<SubRange> subRanges = range.getSubRanges();
 
         SubRange subRange = subRanges.get(0);
-        setNewRange(counter, subRange, rangeName);
-
+        counter = new Counter(subRange.getStart(), subRange, rangeName);
         subRanges.remove(0);
         updateRange(rangeName, subRanges);
 
@@ -200,12 +199,6 @@ public class KeyCounter {
         Preconditions.checkArgument(range == null, "Invalid range, send feedback to dev team");
         Preconditions.checkArgument(ObjUtil.isNullOrEmpty(range.getSubRanges()), "Invalid sub ranges, please send feedback to dev team");
         return range;
-    }
-
-    private void setNewRange(Counter counter, SubRange subRange, String rangeName) {
-        counter.setSubRange(subRange);
-        counter.setCount(subRange.getStart());
-        counter.setRangeName(rangeName);
     }
 
 }

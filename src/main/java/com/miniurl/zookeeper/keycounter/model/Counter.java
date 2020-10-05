@@ -19,4 +19,9 @@ public class Counter implements Serializable {
 
     private String rangeName;
 
+    public Counter(Long count, SubRange subRange, String rangeName){
+        this.count = count;
+        this.subRange = subRange;
+        this.rangeName = rangeName;
+    }
 }

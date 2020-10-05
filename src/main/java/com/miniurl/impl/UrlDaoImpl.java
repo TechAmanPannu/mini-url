@@ -46,11 +46,10 @@ public class UrlDaoImpl implements UrlDao {
     private UrlProducer urlProducer;
 
     @Override
-    public String create(UrlRequest urlRequest) throws EntityException {
+    public Url create(UrlRequest urlRequest) throws EntityException {
 
         Preconditions.checkArgument(urlRequest == null, "Invalid url to save");
         Preconditions.checkArgument(ObjUtil.isBlank(urlRequest.getUrl()), "Invalid url string to create url");
-
 
         String createdBy = ObjUtil.isBlank(urlRequest.getUserId()) ? AppConstants.APP_USER : urlRequest.getUserId();
 
@@ -66,12 +65,25 @@ public class UrlDaoImpl implements UrlDao {
             throw new EntityException(EntityErrorCode.CREATE_FAILED, "Failed to create url");
 
         if (ObjUtil.isBlank(url.getCreatedBy()))
-            return url.getId();
-
-
+            return url;
 
         urlProducer.createUrl(url);
-        return url.getId();
+        return url;
+    }
+
+    @Override
+    public List<Url> createBulk(UrlRequest url) throws EntityException {
+
+        Preconditions.checkArgument(url == null, "Invalid url request body to create bulk mini urls");
+        Preconditions.checkArgument(ObjUtil.isNullOrEmpty(url.getUrls()), "No urls found to create bulk mini urls");
+        Preconditions.checkArgument(url.getUrls().size() > 100, "Urls cannot be more than 100 limit");
+
+        List<Url> urls = new ArrayList<>();
+
+        for(String rawUrl : url.getUrls())
+            urls.add(create(new UrlRequest(rawUrl, url.getUserId(), null)));
+
+        return urls;
     }
 
 

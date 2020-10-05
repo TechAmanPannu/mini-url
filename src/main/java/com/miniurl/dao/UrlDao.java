@@ -17,7 +17,9 @@ public interface UrlDao {
 
     Url get(String id);
 
-    String create(UrlRequest url) throws EntityException;
+    Url create(UrlRequest url) throws EntityException;
+
+    List<Url> createBulk(UrlRequest url) throws EntityException;
 
     boolean delete(String id);
 
