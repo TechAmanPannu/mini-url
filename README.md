@@ -14,7 +14,7 @@ https://miniurl.com/ljhni9
 It is highly scalable and distributed application specially build to generate short urls. 
 
 ## Documentation
-Please refer to this [doc](https://github.com/TechAmanPannu/mini-url/wiki) to understand about mini-url, Stack (why and what ?), App Architecture, Database Design, Estimation Key Concepts(Cost, Traffic, Storage, Bandwidth etc)
+Please refer to this [doc](https://github.com/TechAmanPannu/mini-url/wiki) to understand about Mini-Url, Basic Setup, Stack (why and what ?), App Architecture, Database Design, Estimation Key Concepts(Cost, Traffic, Storage, Bandwidth etc.).
 
 ## Java SDK Download
 Please download [java sdk]() to generate short urls in backend servers.
