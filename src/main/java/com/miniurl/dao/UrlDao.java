@@ -1,6 +1,8 @@
 package com.miniurl.dao;
 
 import com.miniurl.entity.Url;
+import com.miniurl.entity.indexes.url.UrlCreatedInDescByUser;
+import com.miniurl.entity.indexes.url.UrlExpiresAtWithCreatedUser;
 import com.miniurl.exception.EntityException;
 import com.miniurl.model.request.UrlRequest;
 import org.springframework.stereotype.Service;
@@ -24,4 +26,8 @@ public interface UrlDao {
     List<Url> getByIds(Set<String> ids);
 
     List<Url> getExpiredUrls(String createdBy, long byTime);
+
+    UrlCreatedInDescByUser save(UrlCreatedInDescByUser urlCreatedInDescByUser);
+
+    UrlExpiresAtWithCreatedUser save(UrlExpiresAtWithCreatedUser urlExpiresAtWithCreatedUser);
 }

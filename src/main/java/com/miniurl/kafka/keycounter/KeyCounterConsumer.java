@@ -13,7 +13,7 @@ public class KeyCounterConsumer {
     @Autowired
     private KeyCounter keyCounter;
 
-    @KafkaListener(topics = {KeyCounterProducer.ADD_COUNTER_RANGES}, groupId = "${kafka.consumer.group.id}")
+    @KafkaListener(topics = {KeyCounterTopic.COUNTER_ADD_RANGES}, groupId = "${kafka.consumer.group.id}")
     public void processAddingAllRanges(String payload) {
 
         log.info("payload : "+payload);

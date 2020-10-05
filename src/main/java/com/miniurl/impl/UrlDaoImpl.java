@@ -7,6 +7,7 @@ import com.miniurl.entity.indexes.url.UrlCreatedInDescByUser;
 import com.miniurl.entity.indexes.url.UrlExpiresAtWithCreatedUser;
 import com.miniurl.exception.EntityException;
 import com.miniurl.exception.enums.EntityErrorCode;
+import com.miniurl.kafka.url.UrlProducer;
 import com.miniurl.model.request.UrlRequest;
 import com.miniurl.repositories.url.UrlCreatedInDescByUserRepository;
 import com.miniurl.repositories.url.UrlExpiresAtWithCreatedUserRepository;
@@ -41,6 +42,9 @@ public class UrlDaoImpl implements UrlDao {
     @Autowired
     private KeyCounter keyCounter;
 
+    @Autowired
+    private UrlProducer urlProducer;
+
     @Override
     public String create(UrlRequest urlRequest) throws EntityException {
 
@@ -64,9 +68,9 @@ public class UrlDaoImpl implements UrlDao {
         if (ObjUtil.isBlank(url.getCreatedBy()))
             return url.getId();
 
-        // todo need to write in background queue process
-        save(new UrlCreatedInDescByUser(url.getCreatedBy(), url.getCreatedAt(), url.getId()));
-        save(new UrlExpiresAtWithCreatedUser(url.getCreatedBy(), url.getExpiresAt(), url.getId()));
+
+
+        urlProducer.createUrl(url);
         return url.getId();
     }
 
@@ -159,6 +163,37 @@ public class UrlDaoImpl implements UrlDao {
 
     }
 
+    @Override
+    public UrlCreatedInDescByUser save(UrlCreatedInDescByUser urlCreatedInDescByUser) {
+
+        Preconditions.checkArgument(urlCreatedInDescByUser == null, "Invalid urlCreatedInDescByUser to save");
+        Preconditions.checkArgument(ObjUtil.isBlank(urlCreatedInDescByUser.getUrlId()), "Invalid urlId to save urlCreatedInDescByUser");
+        Preconditions.checkArgument(ObjUtil.isBlank(urlCreatedInDescByUser.getCreatedBy()), "Invalid createdBy to save urlCreatedInDescByUser");
+        Preconditions.checkArgument(urlCreatedInDescByUser.getCreatedAt() <= 0, "Invalid createdAt to save urlCreatedInDescByUser");
+
+        try {
+            return urlCreatedInDescByUserRepository.save(urlCreatedInDescByUser);
+        } catch (Exception e) {
+            log.error("Exception while saving urlCreatedInDescByUser : ", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    @Override
+    public UrlExpiresAtWithCreatedUser save(UrlExpiresAtWithCreatedUser urlExpiresAtWithCreatedUser) {
+
+        Preconditions.checkArgument(urlExpiresAtWithCreatedUser == null, "Invalid urlExpiresAtWithCreatedUser to save");
+        Preconditions.checkArgument(ObjUtil.isBlank(urlExpiresAtWithCreatedUser.getCreatedBy()), "Invalid createdBy to save urlExpiresAtWithCreatedUser");
+        Preconditions.checkArgument(ObjUtil.isBlank(urlExpiresAtWithCreatedUser.getUrlId()), "Invalid urlId to save urlExpiresAtWithCreatedUser");
+        Preconditions.checkArgument(urlExpiresAtWithCreatedUser.getExpiresAt() <= 0, "Invalid expiresAt to save urlExpiresAtWithCreatedUser");
+        try {
+            return urlExpiresAtWithCreatedUserRepository.save(urlExpiresAtWithCreatedUser);
+        } catch (Exception e) {
+            log.error("Exception while saving UrlExpiresAtWithCreatedUser : ", e.getMessage(), e);
+            return null;
+        }
+    }
+
     private List<UrlExpiresAtWithCreatedUser> getByUserIdAndExpiredAt(String userId, long byTime) {
         try {
             return urlExpiresAtWithCreatedUserRepository.findByCreatedByAndExpiresAtLessThan(userId, byTime);
@@ -187,21 +222,5 @@ public class UrlDaoImpl implements UrlDao {
         }
     }
 
-    private UrlCreatedInDescByUser save(UrlCreatedInDescByUser urlCreatedInDescByUser) {
-        try {
-            return urlCreatedInDescByUserRepository.save(urlCreatedInDescByUser);
-        } catch (Exception e) {
-            log.error("Exception while saving urlCreatedInDescByUser : ", e.getMessage(), e);
-            return null;
-        }
-    }
 
-    private UrlExpiresAtWithCreatedUser save(UrlExpiresAtWithCreatedUser urlExpiresAtWithCreatedUser) {
-        try {
-            return urlExpiresAtWithCreatedUserRepository.save(urlExpiresAtWithCreatedUser);
-        } catch (Exception e) {
-            log.error("Exception while saving UrlExpiresAtWithCreatedUser : ", e.getMessage(), e);
-            return null;
-        }
-    }
 }

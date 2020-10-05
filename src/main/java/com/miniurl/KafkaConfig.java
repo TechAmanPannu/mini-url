@@ -48,20 +48,20 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, Url> urlConsumer() {
+    public ConsumerFactory<String, String> consumerFactory() {
 
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, env.getProperty("kafka.consumer.host"));
         config.put(ConsumerConfig.GROUP_ID_CONFIG, env.getProperty("kafka.consumer.group.id"));
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        return new DefaultKafkaConsumerFactory<>(config, null, new JsonDeserializer<Url>(Url.class));
+        return new DefaultKafkaConsumerFactory<>(config, null, new JsonDeserializer<>());
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Url>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Url> listener = new ConcurrentKafkaListenerContainerFactory<>();
-        listener.setConsumerFactory(urlConsumer());
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> listener = new ConcurrentKafkaListenerContainerFactory<>();
+        listener.setConsumerFactory(consumerFactory());
         return listener;
     }
 

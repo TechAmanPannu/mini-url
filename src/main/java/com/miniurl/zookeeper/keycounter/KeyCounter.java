@@ -1,6 +1,7 @@
 package com.miniurl.zookeeper.keycounter;
 
 import com.miniurl.utils.ObjUtil;
+import com.miniurl.utils.Preconditions;
 import com.miniurl.zookeeper.keycounter.model.Counter;
 import com.miniurl.zookeeper.keycounter.model.Range;
 import com.miniurl.zookeeper.keycounter.model.SubRange;
@@ -24,17 +25,17 @@ public class KeyCounter {
     static final String SUB_RANGE_BY_NAME = RANGE_CLUSTER + "/%s";
 
     // ============================================
-    // Total subRanges = (END_AT / RANGE_DIFFERENCE) i.e 3500
-    // Total ranges = (END_AT / (SUB_RANG_LIMIT * RANGE_DIFFERENCE)) i.e 70
+    // Total subRanges = (END_AT / RANGE_DIFFERENCE)
+    // Total ranges = (END_AT / (SUB_RANG_LIMIT * RANGE_DIFFERENCE))
     // Sub ranges under ranges = SUB_RANGE_LIMIT
 
-    private static final long START_FROM = 100000L;
+    private static final long START_FROM = 100L;
 
-    private static final long END_AT = 350000000L;
+    private static final long END_AT = 1000L;
 
     private static final long SUB_RANGE_LIMIT = 50L;
 
-    private static final long RANGE_DIFFERENCE = 100000L;
+    private static final long RANGE_DIFFERENCE = 100L;
 
     // ===================================================
     private CuratorFramework curatorFramework;
@@ -142,7 +143,7 @@ public class KeyCounter {
     }
 
     private boolean isCounterEnd() {
-        return counter != null && counter.getCount() > counter.getSubRange().getEnd();
+        return counter != null && counter.getCount() != null && counter.getSubRange() != null && counter.getCount() > counter.getSubRange().getEnd();
     }
 
 
@@ -153,6 +154,7 @@ public class KeyCounter {
 
         if (ObjUtil.isNullOrEmpty(subRanges)) {
             Range range = getValidRange();
+
             subRanges = range.getSubRanges();
             rangeName = range.getRangeName();
         }
@@ -194,6 +196,9 @@ public class KeyCounter {
             range.setSubRanges(subRanges);
             range.setRangeName(rangeName);
         }
+
+        Preconditions.checkArgument(range == null, "Invalid range, send feedback to dev team");
+        Preconditions.checkArgument(ObjUtil.isNullOrEmpty(range.getSubRanges()), "Invalid sub ranges, please send feedback to dev team");
         return range;
     }
 
