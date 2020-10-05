@@ -21,7 +21,7 @@ public class UrlConsumer {
     @KafkaListener(topics = {UrlTopic.UPDATE_URL_INDEXES}, groupId = "${kafka.consumer.group.id}")
     public void updateUrlIndexes(String payload) {
 
-        log.info("url consumer started creating url");
+        log.info("url consumer started updating all url indexes");
 
         Url url = ObjUtil.safeConvertJson(payload, Url.class);
 
