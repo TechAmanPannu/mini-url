@@ -11,7 +11,7 @@ https://miniurl.com/ljhni9
 
 
 ## Feature
-It is highly scalable application specially build to generate short urls. 
+It is highly scalable and distributed application specially build to generate short urls. 
 
 ## Documentation
 Please refer to this [doc](https://github.com/TechAmanPannu/mini-url/wiki) to understand about mini-url, Stack (why and what ?), App Architecture, Database Design, Estimation Key Concepts(Cost, Traffic, Storage, Bandwidth etc)
