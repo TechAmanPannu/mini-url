@@ -10,8 +10,9 @@ Short Url:
 https://miniurl.com/ljhni9
 
 
-## Feature
-It is highly scalable and distributed application specially build to generate short urls. 
+## Feature 
+1. Short Link creation
+2. Click Tracking
 
 ## Documentation
 Please refer to this [doc](https://github.com/TechAmanPannu/mini-url/wiki) to understand about Mini-Url, Basic Setup, Stack (what and why ?), App Architecture, Database Design, Estimation Key Concepts(Cost, Traffic, Storage, Bandwidth etc.).
