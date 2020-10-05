@@ -3,5 +3,5 @@ package com.miniurl.kafka.url;
 public final class UrlTopic {
 
     private UrlTopic(){}
-    static final String URL_CREATE = "url_create";
+    static final String UPDATE_URL_INDEXES = "update_url_indexes";
 }

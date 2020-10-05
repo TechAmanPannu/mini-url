@@ -18,7 +18,7 @@ public class UrlProducer {
 
     public void createUrl(Url url) {
 
-        kafkaTemplate.send(new GenericMessage(ObjUtil.getJson(url), KafkaUtil.constructHeaders(UrlTopic.URL_CREATE)));
-        log.info("msg sent to kafka topic - " + UrlTopic.URL_CREATE);
+        kafkaTemplate.send(new GenericMessage(ObjUtil.getJson(url), KafkaUtil.constructHeaders(UrlTopic.UPDATE_URL_INDEXES)));
+        log.info("msg sent to kafka topic - " + UrlTopic.UPDATE_URL_INDEXES);
     }
 }

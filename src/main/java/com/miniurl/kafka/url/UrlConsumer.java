@@ -18,8 +18,8 @@ public class UrlConsumer {
     @Autowired
     private UrlDao urlDao;
 
-    @KafkaListener(topics = {UrlTopic.URL_CREATE}, groupId = "${kafka.consumer.group.id}")
-    public void createUrl(String payload) {
+    @KafkaListener(topics = {UrlTopic.UPDATE_URL_INDEXES}, groupId = "${kafka.consumer.group.id}")
+    public void updateUrlIndexes(String payload) {
 
         log.info("url consumer started creating url");
 
