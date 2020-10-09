@@ -20,6 +20,7 @@ https://miniurl.com/ljhni9
 3. No-expiry URL
 4. Scalable Servers
 5. CSV Import
+6. Brand Urls
 
 ## Documentation
 Please refer to this [doc](https://github.com/TechAmanPannu/mini-url/wiki) to understand about Mini-Url, Basic Setup, Stack (what and why ?), App Architecture, Database Design, Estimation Key Concepts(Cost, Traffic, Storage, Bandwidth etc.) and Apis.
