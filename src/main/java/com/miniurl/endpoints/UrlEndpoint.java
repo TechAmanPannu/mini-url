@@ -1,13 +1,17 @@
 package com.miniurl.endpoints;
 
+import com.miniurl.constants.AppConstants;
 import com.miniurl.dao.UrlDao;
 import com.miniurl.entity.Url;
+import com.miniurl.enums.UrlAccessType;
 import com.miniurl.exception.EntityException;
-import com.miniurl.model.request.UrlRequest;
+import com.miniurl.exception.ForbiddenException;
+import com.miniurl.model.request.UrlCreateRequest;
+import com.miniurl.model.request.UrlUpdateRequest;
 import com.miniurl.model.response.ApiResponse;
+import com.miniurl.model.response.CollectionResponse;
 import com.miniurl.utils.ObjUtil;
 import com.miniurl.utils.Preconditions;
-import com.miniurl.utils.ServerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +30,12 @@ public class UrlEndpoint extends BaseEndpoint {
 
 
     @PostMapping
-    public ApiResponse createUrl(@RequestBody UrlRequest urlRequest) throws EntityException {
+    public ApiResponse createUrl(@RequestBody UrlCreateRequest urlCreateRequest) throws EntityException {
 
         ApiResponse response = new ApiResponse();
 
-        Preconditions.checkArgument(urlRequest == null, "Invalid url request");
-        Url url = urlDao.create(urlRequest);
+        Preconditions.checkArgument(urlCreateRequest == null, "Invalid url request");
+        Url url = urlDao.create(urlCreateRequest);
 
         response.setOk(true);
         response.add("url", url);
@@ -40,12 +44,12 @@ public class UrlEndpoint extends BaseEndpoint {
 
 
     @PostMapping(value = "/bulk")
-    public ApiResponse createUrlInBulk(@RequestBody UrlRequest urlRequest) throws EntityException {
+    public ApiResponse createUrlInBulk(@RequestBody UrlCreateRequest urlCreateRequest) throws EntityException {
 
         ApiResponse response = new ApiResponse();
 
-        Preconditions.checkArgument(urlRequest == null, "Invalid url request");
-        List<Url> urls = urlDao.createBulk(urlRequest);
+        Preconditions.checkArgument(urlCreateRequest == null, "Invalid url request");
+        List<Url> urls = urlDao.createBulk(urlCreateRequest);
 
         response.setOk(true);
         response.add("urls", urls);
@@ -53,35 +57,56 @@ public class UrlEndpoint extends BaseEndpoint {
     }
 
     @GetMapping("/user/{userId}")
-    public ApiResponse getUserUrls(@PathVariable(value = "userId") String userId) {
+    public ApiResponse getUserUrls(@PathVariable(value = "userId") String userId,
+                                   @RequestParam(value = "access_type", required = false) String accessType,
+                                   @RequestParam(value = "since", required = false) Long since,
+                                   @RequestParam(value = "start_time", required = false) Long startTime,
+                                   @RequestParam(value = "end_time", required = false) Long endTime,
+                                   @RequestParam(value = "limit", required = false) Integer limit,
+                                   @RequestParam(value = "offSet", required = false) Integer offSet) {
 
         ApiResponse response = new ApiResponse();
 
-        List<Url> urls = urlDao.getByCreatedAtDesc(userId, System.currentTimeMillis());
+        UrlAccessType accessTypeEnum = UrlAccessType.fromValue(accessType);
 
-        response.add("urls", urls);
+        if (accessTypeEnum == null)
+            accessTypeEnum = UrlAccessType.PUBLIC;
 
-        if (ObjUtil.isNullOrEmpty(urls))
+        CollectionResponse<Url> urlResponse = urlDao.getUserUrls(userId, accessTypeEnum, since, startTime, endTime, limit, offSet);
+
+        response.add("urls", urlResponse.getItems());
+        response.add("offSet", urlResponse.getOffSet());
+        if (ObjUtil.isNullOrEmpty(urlResponse.getItems()))
             response.add("urls", new ArrayList<>());
 
         response.setOk(true);
         return response;
     }
 
-    @GetMapping("/user/{userId}/expired")
-    public ApiResponse getExpiredUserUrls(@PathVariable(value = "userId") String userId) {
+    @DeleteMapping
+    public ApiResponse deleteUserUrls(@RequestBody Set<String> urlIds) {
 
         ApiResponse response = new ApiResponse();
 
-        List<Url> urls = urlDao.getExpiredUrls(userId, System.currentTimeMillis());
-
-        response.add("urls", urls);
-
-        if (ObjUtil.isNullOrEmpty(urls))
-            response.add("urls", new ArrayList<>());
+        urlDao.deleteUserUrls(AppConstants.APP_USER, urlIds);
 
         response.setOk(true);
         return response;
     }
 
+    @PutMapping(value = "/{urlId}/access")
+    public ApiResponse updateUrlAccess(@PathVariable("urlId") String urlId, @RequestBody UrlUpdateRequest urlUpdateRequest) throws ForbiddenException {
+
+        ApiResponse response = new ApiResponse();
+
+        Preconditions.checkArgument(urlUpdateRequest == null, "Invalid url update request");
+        Url url = urlDao.updateUrlAccess(urlId, AppConstants.APP_USER, urlUpdateRequest);
+
+        response.setOk(true);
+        response.add("url", url);
+
+        return response;
+    }
 }
+
+

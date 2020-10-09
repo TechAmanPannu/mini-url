@@ -33,7 +33,7 @@ public class KeyCounter {
 
     private static final long END_AT = 1000L;
 
-    private static final long SUB_RANGE_LIMIT = 50L;
+    private static final long SUB_RANGE_LIMIT = 5L;
 
     private static final long RANGE_DIFFERENCE = 100L;
 
@@ -68,6 +68,7 @@ public class KeyCounter {
 
         List<SubRange> subRanges = new ArrayList<>();
         int subRangeCounter = 1;
+
         for (long startRange = START_FROM; startRange <= END_AT; startRange = startRange + RANGE_DIFFERENCE) {
 
             if (subRangeCounter == SUB_RANGE_LIMIT) {
@@ -127,7 +128,7 @@ public class KeyCounter {
 
     public synchronized long getCountAndIncr() {
 
-        log.info("time of request :" + System.currentTimeMillis());
+
         if (this.counter == null)
             return createNewCounter();
 
@@ -137,7 +138,6 @@ public class KeyCounter {
         long count = this.counter.getCount();
         counter.setCount(counter.getCount() + 1);
 
-        log.info("count " + count);
         return count;
 
     }

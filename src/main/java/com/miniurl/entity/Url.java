@@ -1,48 +1,76 @@
 package com.miniurl.entity;
 
 
-import com.miniurl.constants.AppConstants;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.miniurl.enums.UrlAccessType;
+import com.miniurl.utils.HashUtil;
 import com.miniurl.utils.ObjUtil;
-import com.miniurl.utils.Preconditions;
-import lombok.AllArgsConstructor;
+import dev.morphia.annotations.Entity;
+import dev.morphia.annotations.IndexOptions;
+import dev.morphia.annotations.Indexed;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.cassandra.core.mapping.CassandraType;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.Table;
+import net.minidev.json.annotate.JsonIgnore;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
-@Table
-public class Url extends BaseEntity {
+@Entity
+public class Url extends BaseEntity implements Cloneable {
 
     private static final long serialVersionUID = 2385642147284863564L;
 
-    @CassandraType(type = CassandraType.Name.TEXT)
-    @Column(value = "created_by")
+    @Indexed(options = @IndexOptions(sparse = true, background = true))
     private String createdBy;
 
-    @CassandraType(type = CassandraType.Name.SET,  typeArguments = { CassandraType.Name.TEXT })
     private Set<String> users;
 
-    @CassandraType(type = CassandraType.Name.TEXT)
     private String url;
 
-    @CassandraType(type = CassandraType.Name.TEXT) //todo need to convert it to enums
-    @Column("access_type")
-    private String accessType;
+    @Indexed(options = @IndexOptions(sparse = true, background = true))
+    private UrlAccessType accessType;
 
-    @CassandraType(type = CassandraType.Name.BIGINT)
-    @Column("expires_at")
-    private Long expiresAt;
+    @Indexed(options = @IndexOptions(sparse = true, background = true))
+    private String acctId;
+
+    @Indexed(options = @IndexOptions(sparse = true, background = true))
+    private String domain;
+
+    @Indexed(options = @IndexOptions(sparse = true))
+    private String linkId;
 
     public Url(String url){
         this.url = url;
     }
+
+    public static List<Url> asList(String json){
+
+        try {
+            return ObjUtil.getJacksonMapper().readValue(json,
+                    new TypeReference<ArrayList<Url>>() {
+                    });
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public Url clone(){
+
+        Url url = null;
+
+        try {
+            url = (Url) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
 
 }

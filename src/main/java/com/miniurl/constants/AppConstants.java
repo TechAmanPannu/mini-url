@@ -11,9 +11,9 @@ public final class AppConstants {
     private AppConstants() {
     }
 
-    public final static String APP_URL = "";
     public final static String APP_USER = "MINI_URL_APP_USER";
     public final static AppMode APP_MODE;
+    public final static String APP_HOST = "192.168.64.21";
 
     static {
 
@@ -60,6 +60,10 @@ public final class AppConstants {
 
     public static boolean isProduction() {
         return APP_MODE == AppMode.PRODUCTION;
+    }
+
+    public static boolean isMinikube(){
+        return APP_MODE == AppMode.MINIKUBE;
     }
 
 

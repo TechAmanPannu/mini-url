@@ -1,7 +1,8 @@
 package com.miniurl.utils;
 
-import com.datastax.oss.driver.shaded.guava.common.base.Charsets;
-import com.datastax.oss.driver.shaded.guava.common.hash.Hashing;
+
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 
 public final class HashUtil {
 

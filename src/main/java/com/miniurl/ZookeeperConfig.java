@@ -49,7 +49,6 @@ public class ZookeeperConfig {
 
     @Bean
     public KeyCounter keyCounter(){
-
         KeyCounter keyCounter = new KeyCounter(zookeeperFrameworkConfig());
         return keyCounter;
     }

@@ -1,35 +1,42 @@
 package com.miniurl.dao;
 
 import com.miniurl.entity.Url;
-import com.miniurl.entity.indexes.url.UrlCreatedInDescByUser;
-import com.miniurl.entity.indexes.url.UrlExpiresAtWithCreatedUser;
+import com.miniurl.enums.UrlAccessType;
 import com.miniurl.exception.EntityException;
-import com.miniurl.model.request.UrlRequest;
+import com.miniurl.exception.ForbiddenException;
+import com.miniurl.model.request.UrlCreateRequest;
+import com.miniurl.model.request.UrlUpdateRequest;
+import com.miniurl.model.response.CollectionResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
 @Service
 public interface UrlDao {
 
     Url save(String id, Url url);
 
-    Url get(String id);
+    Url get(String domain, String linkId);
 
-    Url create(UrlRequest url) throws EntityException;
+    Url create(UrlCreateRequest url) throws EntityException;
 
-    List<Url> createBulk(UrlRequest url) throws EntityException;
+    List<Url> createBulk(UrlCreateRequest url) throws EntityException;
+
+    CompletableFuture<List<Url>> createBulkAsync(UrlCreateRequest urlCreateRequest, ExecutorService executorService);
 
     boolean delete(String id);
 
-    List<Url> getByCreatedAtDesc(String createdBy, long createdAt);
+    boolean delete(Set<String> ids);
+
 
     List<Url> getByIds(Set<String> ids);
 
-    List<Url> getExpiredUrls(String createdBy, long byTime);
+    boolean deleteUserUrls(String appUrl, Set<String> urlIds);
 
-    UrlCreatedInDescByUser save(UrlCreatedInDescByUser urlCreatedInDescByUser);
+    Url updateUrlAccess(String urlId, String userId, UrlUpdateRequest urlUpdateRequest) throws ForbiddenException;
 
-    UrlExpiresAtWithCreatedUser save(UrlExpiresAtWithCreatedUser urlExpiresAtWithCreatedUser);
+    CollectionResponse<Url> getUserUrls(String userId, UrlAccessType accessType, Long since, Long startTime, Long endTime, Integer limit, Integer offSet);
 }
